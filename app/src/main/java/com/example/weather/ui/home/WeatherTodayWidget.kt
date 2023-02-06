@@ -172,12 +172,9 @@ fun CurrentLocationSection(
       tint = colorResource(id = R.color.dark_yellow),
       contentDescription = null
     )
-    val test = weatherDto.sys?.country.toString()
-    val locale = Locale("", test)
-    val location = "${locale.displayCountry}, ${weatherDto.name}"
     Text(
       modifier = Modifier.padding(start = 10.dp),
-      text = location,
+      text = weatherDto.name.toString(),
       style = TextStyle(
         color = Color.White,
         fontSize = 18.sp,
