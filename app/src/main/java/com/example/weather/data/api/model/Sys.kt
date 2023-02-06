@@ -8,5 +8,7 @@ data class Sys(
   @SerializedName("sunrise")
   val sunrise: Int?,
   @SerializedName("sunset")
-  val sunset: Int?
+  val sunset: Int?,
+  @SerializedName("pod")
+  val pod: String? = null
 )
