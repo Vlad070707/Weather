@@ -29,7 +29,7 @@ import com.example.weather.data.api.model.CurrentWeatherDto
 import com.example.weather.data.api.model.Main
 import com.example.weather.data.api.model.Weather
 import com.example.weather.util.Utils
-import java.text.SimpleDateFormat
+import com.example.weather.util.Utils.getCurrentDate
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -38,18 +38,16 @@ fun CurrentWeatherWidget(
   todayWeatherDto: CurrentWeatherDto
 ) {
   Surface(
-    modifier = Modifier.padding(20.dp),
+    modifier = Modifier
+      .padding(20.dp),
     shape = RoundedCornerShape(25.dp),
     color = Color(0xFF27254A)
   ) {
-    val calendar = Calendar.getInstance()
-    val date = calendar.time
-    val currentDate = SimpleDateFormat("EE, dd MMM", Locale.ENGLISH).format(date.time)
-
     Column(
-      modifier = Modifier.padding(start = 30.dp, top = 25.dp, bottom = 25.dp)
+      modifier = Modifier
+        .padding(start = 30.dp, top = 25.dp, bottom = 25.dp)
     ) {
-      CurrentDateSection(date = currentDate)
+      CurrentDateSection()
       DescriptionSection(weatherDto = todayWeatherDto)
       CurrentTempSection(weatherDto = todayWeatherDto)
       CurrentLocationSection(weatherDto = todayWeatherDto)
@@ -58,9 +56,7 @@ fun CurrentWeatherWidget(
 }
 
 @Composable
-fun CurrentDateSection(
-  date: String
-) {
+fun CurrentDateSection() {
   Row(
     modifier = Modifier
       .fillMaxWidth()
@@ -79,7 +75,7 @@ fun CurrentDateSection(
       )
     )
     Text(
-      text = date,
+      text = getCurrentDate(),
       style = TextStyle(
         color = Color.White,
         fontSize = 16.sp,
@@ -188,9 +184,7 @@ fun CurrentLocationSection(
 @Preview
 @Composable
 fun PreviewCurrentDateSection() {
-  CurrentDateSection(
-    date = "Mon, 06 Feb"
-  )
+  CurrentDateSection()
 }
 
 @Preview
@@ -199,7 +193,6 @@ fun PreviewCurrentTempSection() {
   CurrentTempSection(
     CurrentWeatherDto(
       main = Main(temp = 30.0),
-      name = "Allentown, New Mexico 31134",
       weather = listOf(Weather(icon = "01d"))
     )
   )
@@ -210,8 +203,6 @@ fun PreviewCurrentTempSection() {
 fun PreviewDescriptionSection() {
   DescriptionSection(
     CurrentWeatherDto(
-      main = Main(temp = 30.0),
-      name = "Allentown, New Mexico 31134",
       weather = listOf(Weather(description = "overcast clouds"))
     )
   )
@@ -222,9 +213,7 @@ fun PreviewDescriptionSection() {
 fun PreviewCurrentLocationSection() {
   CurrentLocationSection(
     CurrentWeatherDto(
-      main = Main(temp = 30.0),
-      name = "Allentown, New Mexico 31134",
-      weather = listOf(Weather(icon = "01d"))
+      name = "Allentown, New Mexico 31134"
     )
   )
 }
@@ -236,7 +225,7 @@ fun PreviewCurrentWeatherWidget() {
     CurrentWeatherDto(
       main = Main(temp = 30.0),
       name = "Allentown, New Mexico 31134",
-      weather = listOf(Weather(icon = "01d"))
+      weather = listOf(Weather(icon = "01d", description = "overcast clouds"))
     )
   )
 }

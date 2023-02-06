@@ -1,6 +1,8 @@
 package com.example.weather.util
 
 import com.example.weather.R
+import java.text.SimpleDateFormat
+import java.util.*
 
 object Utils {
 
@@ -20,4 +22,11 @@ object Utils {
       else -> R.drawable.d01
     }
   }
+
+  fun getCurrentDate(): String {
+    val calendar = Calendar.getInstance()
+    val date = calendar.time
+    return SimpleDateFormat("EE, dd MMM", Locale.ENGLISH).format(date.time)
+  }
+
 }
