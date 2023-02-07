@@ -29,7 +29,6 @@ import com.example.weather.data.api.model.CurrentWeatherDto
 import com.example.weather.data.api.model.Main
 import com.example.weather.data.api.model.Weather
 import com.example.weather.util.Utils
-import com.example.weather.util.Utils.getCurrentDate
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -41,7 +40,7 @@ fun CurrentWeatherWidget(
     modifier = Modifier
       .padding(20.dp),
     shape = RoundedCornerShape(25.dp),
-    color = Color(0xFF27254A)
+    color = colorResource(id = R.color.dark_blue)
   ) {
     Column(
       modifier = Modifier
@@ -75,7 +74,7 @@ fun CurrentDateSection() {
       )
     )
     Text(
-      text = getCurrentDate(),
+      text = Utils.getDateFor(pattern = "EE, dd MMM"),
       style = TextStyle(
         color = Color.White,
         fontSize = 16.sp,

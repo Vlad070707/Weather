@@ -1,6 +1,8 @@
 package com.example.weather.util
 
 import com.example.weather.R
+import com.example.weather.data.api.model.FutureWeatherDto
+import com.example.weather.data.api.model.Item
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,10 +25,29 @@ object Utils {
     }
   }
 
-  fun getCurrentDate(): String {
+  fun getDateFor(forTomorrow: Boolean = false, pattern: String): String {
     val calendar = Calendar.getInstance()
+    if (forTomorrow) {
+      calendar.add(Calendar.DATE, 1)
+    }
     val date = calendar.time
-    return SimpleDateFormat("EE, dd MMM", Locale.ENGLISH).format(date.time)
+    return SimpleDateFormat(pattern, Locale.ENGLISH).format(date.time)
   }
 
+  fun mapWeather(futureWeatherDto: FutureWeatherDto, isTodayWeather: Boolean = true): List<Item> {
+    val patternForWeather = "yyyy-MM-dd"
+    val patternOfItemWeather = "yyyy-MM-dd HH:mm:ss"
+    val currentDate =
+      if (isTodayWeather) {
+        getDateFor(pattern = patternForWeather)
+      } else {
+        getDateFor(forTomorrow = true, pattern = patternForWeather)
+      }
+    val generalListOfWeather = futureWeatherDto.list
+    return generalListOfWeather.filter {
+      val itemDate = SimpleDateFormat(patternOfItemWeather, Locale.ENGLISH).parse(it.dtTxt.toString())
+      val formattedDate = SimpleDateFormat(patternForWeather, Locale.ENGLISH).format(itemDate?.time ?: "")
+      formattedDate == currentDate
+    }
+  }
 }

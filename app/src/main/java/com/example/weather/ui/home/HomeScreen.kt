@@ -55,7 +55,9 @@ fun HomeScreen(
           CurrentWeatherWidget(
             currentWeatherState.value.data!!
           )
-          WeatherForNextDaysWidget()
+          WeatherForNextDaysWidget(
+            futureWeatherState.value.data!!
+          )
         }
       } else {
         Box(

@@ -2,7 +2,7 @@
   <string name="app_name">Weather</string>
   <string name="today">Today</string>
   <string name="tomorrow">Tomorrow</string>
-  <string name="next_week">Next 7 Days</string>
+  <string name="next_week">Next 5 Days</string>
   <string name="degrees_celsius">°C</string>
   <string name="title">Weather assist</string>
 </resources>

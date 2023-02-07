@@ -10,7 +10,7 @@ data class FutureWeatherDto(
   @SerializedName("cod")
   val cod: String? = null,
   @SerializedName("list")
-  val list: List<Item>? = null,
+  val list: List<Item>,
   @SerializedName("message")
   val message: Int? = null
 ) : WeatherDto
