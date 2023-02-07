@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 object WeatherDestination {
   const val HOME_ROUTE = "home"
   const val DETAILS_ROUTE = "details"
+  const val SPLASH_SCREEN = "splash screen"
 }
 
 class WeatherNavigationActions(navController: NavHostController) {

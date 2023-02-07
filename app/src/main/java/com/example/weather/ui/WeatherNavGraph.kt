@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.weather.R
 import com.example.weather.ui.home.HomeScreen
+import com.example.weather.ui.splash_screen.SplashScreen
 
 @Composable
 fun WeatherNavGraph(
@@ -35,6 +36,9 @@ fun WeatherNavGraph(
           .wrapContentSize(align = Alignment.Center),
         color = colorResource(id = R.color.dark_yellow)
       )
+    }
+    composable(WeatherDestination.SPLASH_SCREEN){
+      SplashScreen(navController = navController)
     }
   }
 }
