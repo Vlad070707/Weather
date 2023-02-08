@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weather.R
+import com.example.weather.ui.home.views.WeatherForNextDaysWidget
 import com.example.weather.util.Resource
 
 @Composable

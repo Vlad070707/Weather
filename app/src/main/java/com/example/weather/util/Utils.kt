@@ -1,8 +1,8 @@
 package com.example.weather.util
 
 import com.example.weather.R
-import com.example.weather.data.api.model.FutureWeatherDto
-import com.example.weather.data.api.model.Item
+import com.example.weather.data.api.models.FutureWeatherDto
+import com.example.weather.data.api.models.Item
 import java.text.SimpleDateFormat
 import java.util.*
 

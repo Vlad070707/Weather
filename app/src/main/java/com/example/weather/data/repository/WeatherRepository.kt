@@ -1,12 +1,12 @@
 package com.example.weather.data.repository
 
 import com.example.weather.data.api.WeatherApi
-import com.example.weather.data.api.model.CurrentWeatherDto
-import com.example.weather.data.api.model.FutureWeatherDto
+import com.example.weather.data.api.models.CurrentWeatherDto
+import com.example.weather.data.api.models.FutureWeatherDto
 import com.example.weather.util.Resource
 import javax.inject.Inject
 
-class WeatherRepo @Inject constructor(
+class WeatherRepository @Inject constructor(
   private val weatherApi: WeatherApi
 ) {
 

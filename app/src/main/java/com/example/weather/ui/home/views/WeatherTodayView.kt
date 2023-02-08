@@ -4,7 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,9 +25,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weather.R
-import com.example.weather.data.api.model.CurrentWeatherDto
-import com.example.weather.data.api.model.Main
-import com.example.weather.data.api.model.Weather
+import com.example.weather.data.api.models.CurrentWeatherDto
+import com.example.weather.data.api.models.Main
+import com.example.weather.data.api.models.Weather
 import com.example.weather.util.Utils
 import java.util.*
 import kotlin.math.roundToInt
@@ -163,7 +163,7 @@ fun CurrentLocationSection(
     verticalAlignment = Alignment.CenterVertically
   ) {
     Icon(
-      imageVector = Icons.Filled.LocationOn,
+      imageVector = Icons.Outlined.LocationOn,
       tint = colorResource(id = R.color.dark_yellow),
       contentDescription = null
     )

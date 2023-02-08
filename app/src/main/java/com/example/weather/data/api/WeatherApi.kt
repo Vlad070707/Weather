@@ -3,8 +3,8 @@ package com.example.weather.data.api
 import com.example.weather.data.api.ApiConstants.API_KEY
 import com.example.weather.data.api.ApiConstants.END_POINTS_CURRENT_WEATHER
 import com.example.weather.data.api.ApiConstants.END_POINTS_FUTURE_WEATHER
-import com.example.weather.data.api.model.CurrentWeatherDto
-import com.example.weather.data.api.model.FutureWeatherDto
+import com.example.weather.data.api.models.CurrentWeatherDto
+import com.example.weather.data.api.models.FutureWeatherDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

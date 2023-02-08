@@ -2,7 +2,7 @@ package com.example.weather.di
 
 import com.example.weather.data.api.ApiConstants.BASE_URL
 import com.example.weather.data.api.WeatherApi
-import com.example.weather.data.repository.WeatherRepo
+import com.example.weather.data.repository.WeatherRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,6 +29,6 @@ object WeatherApiModule {
   @Singleton
   fun provideWeatherRepo(
     api: WeatherApi
-  ) = WeatherRepo(api)
+  ) = WeatherRepository(api)
 
 }

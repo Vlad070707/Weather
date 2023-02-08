@@ -1,4 +1,4 @@
-package com.example.weather.ui.home
+package com.example.weather.ui.home.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -29,9 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weather.R
-import com.example.weather.data.api.model.FutureWeatherDto
-import com.example.weather.data.api.model.Item
-import com.example.weather.data.api.model.Main
+import com.example.weather.data.api.models.FutureWeatherDto
+import com.example.weather.data.api.models.Item
+import com.example.weather.data.api.models.Main
 import com.example.weather.util.Utils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -43,18 +43,32 @@ fun WeatherForNextDaysWidget(
 ) {
   var isTodayChecked by remember { mutableStateOf(true) }
   var isTomorrowChecked by remember { mutableStateOf(false) }
+  var isNextFiveDaysChecked by remember { mutableStateOf(false) }
   Column {
     DaysOfWeatherSection(
-      checkToday = { isChecked ->
-        isTodayChecked = isChecked
+      isTodayChecked = isTodayChecked,
+      todayWasChecked = {
+        isTodayChecked = true
+        isTomorrowChecked = false
+        isNextFiveDaysChecked = false
       },
-      checkTomorrow = { isChecked ->
-        isTomorrowChecked = isChecked
+      isTomorrowChecked = isTomorrowChecked,
+      tomorrowWasChecked = {
+        isTodayChecked = false
+        isTomorrowChecked = true
+        isNextFiveDaysChecked = false
+      },
+      isNextFiveDaysChecked = isNextFiveDaysChecked,
+      nextFiveDaysWasChecked = {
+        isTodayChecked = false
+        isTomorrowChecked = false
+        isNextFiveDaysChecked = true
       }
     )
     val list = when {
       isTodayChecked -> Utils.mapWeather(futureWeatherDto = futureWeatherDto, isTodayWeather = true)
       isTomorrowChecked -> Utils.mapWeather(futureWeatherDto = futureWeatherDto, isTodayWeather = false)
+      isNextFiveDaysChecked -> futureWeatherDto.list
       else -> futureWeatherDto.list
     }
     ListOfWeatherSection(list, !isTodayChecked && !isTomorrowChecked)
@@ -63,29 +77,20 @@ fun WeatherForNextDaysWidget(
 
 @Composable
 private fun DaysOfWeatherSection(
-  checkToday: (Boolean) -> Unit,
-  checkTomorrow: (Boolean) -> Unit
+  isTodayChecked: Boolean,
+  todayWasChecked: () -> Unit,
+  isTomorrowChecked: Boolean,
+  tomorrowWasChecked: () -> Unit,
+  isNextFiveDaysChecked: Boolean,
+  nextFiveDaysWasChecked: () -> Unit
 ) {
-  var isTodayChecked by remember {
-    mutableStateOf(true)
-  }
-  var isTomorrowChecked by remember {
-    mutableStateOf(false)
-  }
-  var isNextFiveDaysChecked by remember {
-    mutableStateOf(false)
-  }
   Row(
     modifier = Modifier.padding(start = 20.dp)
   ) {
 
     Text(
       modifier = Modifier.clickable {
-        checkToday(true)
-        checkTomorrow(false)
-        isTodayChecked = true
-        isTomorrowChecked = false
-        isNextFiveDaysChecked = false
+        todayWasChecked()
       },
       text = stringResource(R.string.today),
       style = TextStyle(
@@ -98,11 +103,7 @@ private fun DaysOfWeatherSection(
     Text(
       modifier = Modifier
         .clickable {
-          checkToday(false)
-          checkTomorrow(true)
-          isTodayChecked = false
-          isTomorrowChecked = true
-          isNextFiveDaysChecked = false
+          tomorrowWasChecked()
         }
         .padding(horizontal = 25.dp),
       text = stringResource(R.string.tomorrow),
@@ -115,11 +116,7 @@ private fun DaysOfWeatherSection(
     )
     Text(
       modifier = Modifier.clickable {
-        checkToday(false)
-        checkTomorrow(false)
-        isTodayChecked = false
-        isTomorrowChecked = false
-        isNextFiveDaysChecked = true
+        nextFiveDaysWasChecked()
       },
       text = stringResource(R.string.next_week),
       style = TextStyle(

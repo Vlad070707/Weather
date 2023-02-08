@@ -1,43 +1,28 @@
 package com.example.weather.ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.weather.R
+import com.example.weather.ui.bottom_navigation.Screen
 import com.example.weather.ui.home.HomeScreen
 import com.example.weather.ui.splash_screen.SplashScreen
 
 @Composable
 fun WeatherNavGraph(
-  navController: NavHostController = rememberNavController()
+  navController: NavHostController
 ) {
   NavHost(
     navController = navController,
-    startDestination = WeatherDestination.HOME_ROUTE,
+    startDestination = Screen.Home.id,
   ) {
-    composable(WeatherDestination.HOME_ROUTE) {
+    composable(Screen.Home.id) {
       HomeScreen()
     }
-    composable(WeatherDestination.DETAILS_ROUTE) {
-      CircularProgressIndicator(
-        modifier = Modifier
-          .fillMaxSize()
-          .background(Color(0xFF11103A))
-          .wrapContentSize(align = Alignment.Center),
-        color = colorResource(id = R.color.dark_yellow)
-      )
+    composable(Screen.Location.id) {
+      LocationScreen()
     }
-    composable(WeatherDestination.SPLASH_SCREEN){
+    composable(Screen.Splash.id){
       SplashScreen(navController = navController)
     }
   }
