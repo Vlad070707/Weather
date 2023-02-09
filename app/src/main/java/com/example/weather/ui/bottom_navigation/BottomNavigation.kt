@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -48,7 +49,7 @@ fun BottomNavigation(navController: NavController) {
 @Composable
 fun BottomNavigationItem(item: Screen, isSelected: Boolean, onClick: () -> Unit) {
   val background = if (isSelected) colorResource(id = R.color.dark_yellow) else Color.Transparent
-  val contentColor = if (isSelected) Color(0xFF11103A) else colorResource(id = R.color.dark_yellow)
+  val contentColor = if (isSelected) MaterialTheme.colorScheme.background else colorResource(id = R.color.dark_yellow)
   Box(
     modifier = Modifier
       .clip(RoundedCornerShape(25.dp))

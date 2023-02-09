@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.weather.ui.bottom_navigation.Screen
 import com.example.weather.ui.home.HomeScreen
+import com.example.weather.ui.location.LocationScreen
 import com.example.weather.ui.splash_screen.SplashScreen
 
 @Composable

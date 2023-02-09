@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -40,7 +41,7 @@ fun HomeScreen(
       CircularProgressIndicator(
         modifier = Modifier
           .fillMaxSize()
-          .background(Color(0xFF11103A))
+          .background(MaterialTheme.colorScheme.background)
           .wrapContentSize(align = Alignment.Center),
         color = colorResource(id = R.color.dark_yellow)
       )
@@ -50,7 +51,7 @@ fun HomeScreen(
         Column(
           modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF11103A))
+            .background(MaterialTheme.colorScheme.background)
         ) {
           TitleWidget()
           CurrentWeatherWidget(
@@ -64,7 +65,7 @@ fun HomeScreen(
         Box(
           modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF11103A)),
+            .background(MaterialTheme.colorScheme.background),
           contentAlignment = Alignment.Center
         ) {
           Text(
