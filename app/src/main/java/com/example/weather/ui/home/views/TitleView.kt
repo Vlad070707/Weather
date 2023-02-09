@@ -1,8 +1,7 @@
-package com.example.weather.ui.home
+package com.example.weather.ui.home.views
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,16 +14,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weather.R
 
 @Composable
-fun TitleWidget() {
+fun TitleSection(
+  modifier: Modifier
+) {
   Box(
-    modifier = Modifier
-      .padding(top = 20.dp)
-      .fillMaxWidth(),
+    modifier = modifier,
     contentAlignment = Alignment.Center
   ) {
     Text(
@@ -44,6 +42,6 @@ fun TitleWidget() {
 
 @Preview
 @Composable
-fun PreviewTitleWidget() {
-  TitleWidget()
+fun PreviewTitleSection() {
+  TitleSection(Modifier)
 }

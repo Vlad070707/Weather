@@ -33,7 +33,7 @@ import java.util.*
 import kotlin.math.roundToInt
 
 @Composable
-fun CurrentWeatherWidget(
+fun CurrentWeatherSection(
   todayWeatherDto: CurrentWeatherDto
 ) {
   Surface(
@@ -46,16 +46,16 @@ fun CurrentWeatherWidget(
       modifier = Modifier
         .padding(start = 30.dp, top = 25.dp, bottom = 25.dp)
     ) {
-      CurrentDateSection()
-      DescriptionSection(weatherDto = todayWeatherDto)
-      CurrentTempSection(weatherDto = todayWeatherDto)
-      CurrentLocationSection(weatherDto = todayWeatherDto)
+      CurrentDateView()
+      DescriptionView(weatherDto = todayWeatherDto)
+      CurrentTempView(weatherDto = todayWeatherDto)
+      CurrentLocationView(weatherDto = todayWeatherDto)
     }
   }
 }
 
 @Composable
-fun CurrentDateSection() {
+fun CurrentDateView() {
   Row(
     modifier = Modifier
       .fillMaxWidth()
@@ -86,7 +86,7 @@ fun CurrentDateSection() {
 }
 
 @Composable
-fun CurrentTempSection(
+fun CurrentTempView(
   weatherDto: CurrentWeatherDto
 ) {
   Row(
@@ -135,7 +135,7 @@ fun CurrentTempSection(
 }
 
 @Composable
-fun DescriptionSection(
+fun DescriptionView(
   weatherDto: CurrentWeatherDto
 ) {
   Row(
@@ -156,7 +156,7 @@ fun DescriptionSection(
 }
 
 @Composable
-fun CurrentLocationSection(
+fun CurrentLocationView(
   weatherDto: CurrentWeatherDto
 ) {
   Row(
@@ -182,14 +182,14 @@ fun CurrentLocationSection(
 
 @Preview
 @Composable
-fun PreviewCurrentDateSection() {
-  CurrentDateSection()
+fun PreviewCurrentDateView() {
+  CurrentDateView()
 }
 
 @Preview
 @Composable
-fun PreviewCurrentTempSection() {
-  CurrentTempSection(
+fun PreviewCurrentTempView() {
+  CurrentTempView(
     CurrentWeatherDto(
       main = Main(temp = 30.0),
       weather = listOf(Weather(icon = "01d"))
@@ -199,8 +199,8 @@ fun PreviewCurrentTempSection() {
 
 @Preview
 @Composable
-fun PreviewDescriptionSection() {
-  DescriptionSection(
+fun PreviewDescriptionView() {
+  DescriptionView(
     CurrentWeatherDto(
       weather = listOf(Weather(description = "overcast clouds"))
     )
@@ -209,8 +209,8 @@ fun PreviewDescriptionSection() {
 
 @Preview
 @Composable
-fun PreviewCurrentLocationSection() {
-  CurrentLocationSection(
+fun PreviewCurrentLocationView() {
+  CurrentLocationView(
     CurrentWeatherDto(
       name = "Allentown, New Mexico 31134"
     )
@@ -219,8 +219,8 @@ fun PreviewCurrentLocationSection() {
 
 @Preview
 @Composable
-fun PreviewCurrentWeatherWidget() {
-  CurrentWeatherWidget(
+fun PreviewCurrentWeatherSection() {
+  CurrentWeatherSection(
     CurrentWeatherDto(
       main = Main(temp = 30.0),
       name = "Allentown, New Mexico 31134",

@@ -1,10 +1,7 @@
 package com.example.weather.ui.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,10 +17,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weather.R
-import com.example.weather.ui.home.views.WeatherForNextDaysWidget
+import com.example.weather.ui.home.views.TitleSection
+import com.example.weather.ui.home.views.WeatherForNextDaysSection
 import com.example.weather.util.Resource
 
 @Composable
@@ -53,11 +52,15 @@ fun HomeScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
         ) {
-          TitleWidget()
-          CurrentWeatherWidget(
+          TitleSection(
+            modifier = Modifier
+              .padding(top = 20.dp)
+              .fillMaxWidth()
+          )
+          CurrentWeatherSection(
             currentWeatherState.value.data!!
           )
-          WeatherForNextDaysWidget(
+          WeatherForNextDaysSection(
             futureWeatherState.value.data!!
           )
         }

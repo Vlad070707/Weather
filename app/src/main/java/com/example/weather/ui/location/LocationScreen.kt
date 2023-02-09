@@ -1,23 +1,34 @@
 package com.example.weather.ui.location
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import com.example.weather.ui.location.views.SearchSection
 
 @Composable
 fun LocationScreen() {
-  Box(
+  var isSearchBarFocused by remember {
+    mutableStateOf(false)
+  }
+  Surface(
     modifier = Modifier
       .fillMaxSize()
-      .background(MaterialTheme.colorScheme.background),
-    contentAlignment = Alignment.Center
+      .clickable {
+        isSearchBarFocused = false
+      },
+    color = MaterialTheme.colorScheme.background
   ) {
-    Text(text = "This is Location Screen")
+    SearchSection(
+      isSearchBarFocused = isSearchBarFocused,
+      onCancelClicked = {
+        isSearchBarFocused = false
+      },
+      focusOfSearchBarWasChanged = {
+        isSearchBarFocused = it
+      }
+    )
   }
 }

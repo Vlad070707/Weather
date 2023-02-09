@@ -38,14 +38,14 @@ import java.util.*
 import kotlin.math.roundToInt
 
 @Composable
-fun WeatherForNextDaysWidget(
+fun WeatherForNextDaysSection(
   futureWeatherDto: FutureWeatherDto
 ) {
   var isTodayChecked by remember { mutableStateOf(true) }
   var isTomorrowChecked by remember { mutableStateOf(false) }
   var isNextFiveDaysChecked by remember { mutableStateOf(false) }
   Column {
-    DaysOfWeatherSection(
+    DaysOfWeatherView(
       isTodayChecked = isTodayChecked,
       todayWasChecked = {
         isTodayChecked = true
@@ -71,12 +71,12 @@ fun WeatherForNextDaysWidget(
       isNextFiveDaysChecked -> futureWeatherDto.list
       else -> futureWeatherDto.list
     }
-    ListOfWeatherSection(list, !isTodayChecked && !isTomorrowChecked)
+    ListOfWeatherView(list, !isTodayChecked && !isTomorrowChecked)
   }
 }
 
 @Composable
-private fun DaysOfWeatherSection(
+private fun DaysOfWeatherView(
   isTodayChecked: Boolean,
   todayWasChecked: () -> Unit,
   isTomorrowChecked: Boolean,
@@ -230,7 +230,7 @@ private fun SmallWeatherItem(item: Item?, showDate: Boolean) {
 }
 
 @Composable
-private fun ListOfWeatherSection(futureWeatherDto: List<Item?>, showDate: Boolean) {
+private fun ListOfWeatherView(futureWeatherDto: List<Item?>, showDate: Boolean) {
   LazyRow(
     contentPadding = PaddingValues(20.dp),
     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -254,8 +254,8 @@ private fun getDateAndTime(item: Item?): Pair<String, String> {
 
 @Preview
 @Composable
-fun PreviewWeatherForNextDaysWidget() {
-  WeatherForNextDaysWidget(
+fun PreviewWeatherForNextDaysSection() {
+  WeatherForNextDaysSection(
     FutureWeatherDto(
       list = emptyList()
     )
