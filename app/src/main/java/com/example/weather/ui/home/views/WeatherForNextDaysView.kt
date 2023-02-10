@@ -1,10 +1,13 @@
 package com.example.weather.ui.home.views
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,6 +36,7 @@ import com.example.weather.data.api.models.FutureWeatherDto
 import com.example.weather.data.api.models.Item
 import com.example.weather.data.api.models.Main
 import com.example.weather.util.Utils
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
@@ -229,12 +233,19 @@ private fun SmallWeatherItem(item: Item?, showDate: Boolean) {
   }
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 private fun ListOfWeatherView(futureWeatherDto: List<Item?>, showDate: Boolean) {
+  val lazyListState: LazyListState = rememberLazyListState()
+  val coroutineScope = rememberCoroutineScope()
   LazyRow(
     contentPadding = PaddingValues(20.dp),
-    horizontalArrangement = Arrangement.spacedBy(8.dp)
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+    state = lazyListState
   ) {
+    coroutineScope.launch {
+      lazyListState.animateScrollToItem(0)
+    }
     items(futureWeatherDto) {
       SmallWeatherItem(it, showDate)
     }

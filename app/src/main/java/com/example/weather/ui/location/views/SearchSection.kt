@@ -42,17 +42,17 @@ fun SearchSection(
     focusManager.clearFocus()
   }
 
-  val topPadding by animateDpAsState(
-    if (!isSearchBarFocused) 40.dp else 15.dp,
-//    animationSpec = spring(
-//      dampingRatio = Spring.DampingRatioLowBouncy,
-//      stiffness = Spring.StiffnessHigh
-//    )
-  )
+//  val topPadding by animateDpAsState(
+//    if (!isSearchBarFocused) 40.dp else 15.dp,
+////    animationSpec = spring(
+////      dampingRatio = Spring.DampingRatioLowBouncy,
+////      stiffness = Spring.StiffnessHigh
+////    )
+//  )
 
   Column(
     modifier = Modifier
-      .padding(top = topPadding)
+      .padding(top = 20.dp)
   ) {
     AnimatedVisibility(visible = !isSearchBarFocused) {
       TitleSection(
