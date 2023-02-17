@@ -17,11 +17,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weather.R
-import com.example.weather.ui.home.views.TitleSection
 import com.example.weather.ui.home.views.WeatherForNextDaysSection
 import com.example.weather.util.Resource
 
@@ -52,11 +50,6 @@ fun HomeScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
         ) {
-          TitleSection(
-            modifier = Modifier
-              .padding(top = 20.dp)
-              .fillMaxWidth()
-          )
           CurrentWeatherSection(
             currentWeatherState.value.data!!
           )
@@ -92,7 +85,7 @@ fun HomeScreen(
 @Preview
 @Composable
 fun PreviewHomeScreen() {
-  HomeScreen()
+  HomeScreen(hiltViewModel())
 }
 
 

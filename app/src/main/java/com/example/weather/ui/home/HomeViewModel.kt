@@ -17,17 +17,17 @@ class HomeViewModel @Inject constructor(
   private val weatherRepository: WeatherRepository
 ) : ViewModel() {
 
-  private val _currentWeatherState = MutableStateFlow<Resource<CurrentWeatherDto>>(Resource.Error(""))
+  private val _currentWeatherState = MutableStateFlow<Resource<CurrentWeatherDto>>(Resource.Loading())
   val currentWeatherState: StateFlow<Resource<CurrentWeatherDto>> = _currentWeatherState
 
   private val _futureWeatherState = MutableStateFlow<Resource<FutureWeatherDto>>(Resource.Loading())
   val futureWeatherState: StateFlow<Resource<FutureWeatherDto>> = _futureWeatherState
 
   init {
-    getWeather()
+    updateWeatherData()
   }
 
-  fun getWeather() {
+  fun updateWeatherData() {
     viewModelScope.launch {
       launch(Dispatchers.IO) {
         _currentWeatherState.value = weatherRepository.getCurrentWeather()

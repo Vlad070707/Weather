@@ -146,11 +146,9 @@ private fun SmallWeatherItem(item: Item?, showDate: Boolean) {
       formattedDate = stringResource(id = R.string.tomorrow)
     }
   }
-
-  val height = if (showDate) 150.dp else 130.dp
   Surface(
     modifier = Modifier
-      .size(140.dp, height),
+      .size(140.dp, 150.dp),
     shape = RoundedCornerShape(25.dp),
     color = colorResource(id = R.color.dark_blue)
   ) {

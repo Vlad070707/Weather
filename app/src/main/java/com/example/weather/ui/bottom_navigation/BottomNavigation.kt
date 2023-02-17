@@ -38,9 +38,9 @@ fun BottomNavigation(navController: NavController) {
     verticalAlignment = Alignment.CenterVertically
   ) {
     items.forEach { item ->
-      BottomNavigationItem(item = item, isSelected = item.id == currentScreen.id) {
+      BottomNavigationItem(item = item, isSelected = item.route == currentScreen.route) {
         currentScreen = item
-        navController.navigate(item.id)
+        navController.navigate(item.route)
       }
     }
   }

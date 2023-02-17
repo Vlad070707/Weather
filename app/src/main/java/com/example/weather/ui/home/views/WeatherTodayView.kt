@@ -1,16 +1,23 @@
 package com.example.weather.ui.home
 
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
@@ -32,24 +39,73 @@ import com.example.weather.util.Utils
 import java.util.*
 import kotlin.math.roundToInt
 
+@SuppressLint("RememberReturnType")
 @Composable
 fun CurrentWeatherSection(
   todayWeatherDto: CurrentWeatherDto
 ) {
+  var showMoreDetails by remember {
+    mutableStateOf(false)
+  }
+
+  val rotation = remember {
+    Animatable(initialValue = 0f)
+  }
+
+  LaunchedEffect(showMoreDetails) {
+    rotation.animateTo(
+      targetValue = if (showMoreDetails) 180f else 0f,
+      animationSpec = tween(durationMillis = 800),
+    )
+  }
+
+  val initialModifier = if (showMoreDetails) {
+    Modifier
+      .fillMaxHeight(0.9f)
+  } else {
+    Modifier
+  }
   Surface(
     modifier = Modifier
-      .padding(20.dp),
+      .padding(20.dp)
+      .animateContentSize(
+        animationSpec = spring(
+          dampingRatio = Spring.DampingRatioMediumBouncy,
+          stiffness = Spring.StiffnessMediumLow
+        )
+      ),
     shape = RoundedCornerShape(25.dp),
     color = colorResource(id = R.color.dark_blue)
   ) {
     Column(
-      modifier = Modifier
-        .padding(start = 30.dp, top = 25.dp, bottom = 25.dp)
+      modifier = initialModifier
+        .padding(top = 25.dp),
+      verticalArrangement = Arrangement.SpaceBetween
     ) {
-      CurrentDateView()
-      DescriptionView(weatherDto = todayWeatherDto)
-      CurrentTempView(weatherDto = todayWeatherDto)
-      CurrentLocationView(weatherDto = todayWeatherDto)
+      Column {
+        CurrentDateView()
+        DescriptionView(weatherDto = todayWeatherDto)
+        CurrentTempView(weatherDto = todayWeatherDto)
+        AnimatedVisibility(visible = showMoreDetails) {
+          DescriptionView(weatherDto = todayWeatherDto)
+          CurrentTempView(weatherDto = todayWeatherDto)
+        }
+        CurrentLocationView(weatherDto = todayWeatherDto)
+
+      }
+      Icon(
+        modifier = Modifier
+          .fillMaxWidth()
+          .align(Alignment.CenterHorizontally)
+          .clickable {
+            showMoreDetails = !showMoreDetails
+          }
+          .size(60.dp)
+          .rotate(rotation.value),
+        imageVector = Icons.Outlined.KeyboardArrowDown,
+        contentDescription = null,
+        tint = colorResource(id = R.color.dark_yellow)
+      )
     }
   }
 }
@@ -59,12 +115,12 @@ fun CurrentDateView() {
   Row(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(end = 30.dp),
+      .padding(start = 30.dp, end = 30.dp),
     horizontalArrangement = Arrangement.SpaceBetween,
     verticalAlignment = Alignment.CenterVertically
   ) {
     Text(
-      text = stringResource(R.string.today),
+      text = stringResource(R.string.now),
       style = TextStyle(
         color = Color.White,
         fontWeight = FontWeight.Bold,
@@ -91,7 +147,8 @@ fun CurrentTempView(
 ) {
   Row(
     modifier = Modifier
-      .fillMaxWidth(),
+      .fillMaxWidth()
+      .padding(start = 30.dp),
     horizontalArrangement = Arrangement.SpaceBetween,
     verticalAlignment = Alignment.CenterVertically
   ) {
@@ -139,7 +196,7 @@ fun DescriptionView(
   weatherDto: CurrentWeatherDto
 ) {
   Row(
-    modifier = Modifier.padding(top = 10.dp),
+    modifier = Modifier.padding(start = 30.dp, top = 10.dp),
     horizontalArrangement = Arrangement.SpaceBetween
   ) {
     Text(
@@ -160,6 +217,8 @@ fun CurrentLocationView(
   weatherDto: CurrentWeatherDto
 ) {
   Row(
+    modifier = Modifier
+      .padding(start = 30.dp),
     verticalAlignment = Alignment.CenterVertically
   ) {
     Icon(
