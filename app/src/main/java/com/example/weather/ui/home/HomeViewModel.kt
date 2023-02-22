@@ -2,8 +2,10 @@ package com.example.weather.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weather.data.api.models.CurrentWeatherDto
-import com.example.weather.data.api.models.FutureWeatherDto
+import com.example.weather.data.api.city_models.SearchCityDto
+import com.example.weather.data.api.weather_models.CurrentWeatherDto
+import com.example.weather.data.api.weather_models.FutureWeatherDto
+import com.example.weather.data.repository.SearchCityRepository
 import com.example.weather.data.repository.WeatherRepository
 import com.example.weather.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

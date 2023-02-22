@@ -1,8 +1,9 @@
 package com.example.weather.data.repository
 
 import com.example.weather.data.api.WeatherApi
-import com.example.weather.data.api.models.CurrentWeatherDto
-import com.example.weather.data.api.models.FutureWeatherDto
+import com.example.weather.data.api.city_models.SearchCityDto
+import com.example.weather.data.api.weather_models.CurrentWeatherDto
+import com.example.weather.data.api.weather_models.FutureWeatherDto
 import com.example.weather.util.Resource
 import javax.inject.Inject
 

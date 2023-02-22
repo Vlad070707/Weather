@@ -1,6 +1,7 @@
-package com.example.weather.ui.home
+package com.example.weather.ui.home.views
 
 import android.annotation.SuppressLint
+import android.widget.Space
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.*
@@ -32,9 +33,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weather.R
-import com.example.weather.data.api.models.CurrentWeatherDto
-import com.example.weather.data.api.models.Main
-import com.example.weather.data.api.models.Weather
+import com.example.weather.data.api.weather_models.CurrentWeatherDto
+import com.example.weather.data.api.weather_models.Main
+import com.example.weather.data.api.weather_models.Weather
 import com.example.weather.util.Utils
 import java.util.*
 import kotlin.math.roundToInt
@@ -59,12 +60,6 @@ fun CurrentWeatherSection(
     )
   }
 
-  val initialModifier = if (showMoreDetails) {
-    Modifier
-      .fillMaxHeight(0.9f)
-  } else {
-    Modifier
-  }
   Surface(
     modifier = Modifier
       .padding(20.dp)
@@ -78,7 +73,7 @@ fun CurrentWeatherSection(
     color = colorResource(id = R.color.dark_blue)
   ) {
     Column(
-      modifier = initialModifier
+      modifier = Modifier
         .padding(top = 25.dp),
       verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -87,11 +82,22 @@ fun CurrentWeatherSection(
         DescriptionView(weatherDto = todayWeatherDto)
         CurrentTempView(weatherDto = todayWeatherDto)
         AnimatedVisibility(visible = showMoreDetails) {
-          DescriptionView(weatherDto = todayWeatherDto)
-          CurrentTempView(weatherDto = todayWeatherDto)
+          AdditionalInfoView(weatherDto = todayWeatherDto)
         }
-        CurrentLocationView(weatherDto = todayWeatherDto)
-
+        val modifierForLocationView = if (showMoreDetails) {
+          Modifier
+            .padding(
+              start = 30.dp,
+              top = 10.dp
+            )
+        } else {
+          Modifier
+            .padding(start = 30.dp)
+        }
+        CurrentLocationView(
+          modifier = modifierForLocationView,
+          weatherDto = todayWeatherDto
+        )
       }
       Icon(
         modifier = Modifier
@@ -152,33 +158,9 @@ fun CurrentTempView(
     horizontalArrangement = Arrangement.SpaceBetween,
     verticalAlignment = Alignment.CenterVertically
   ) {
-    Text(
-      buildAnnotatedString {
-        withStyle(
-          style = SpanStyle(
-            color = Color.White,
-            fontWeight = FontWeight.W600,
-            fontSize = 66.sp,
-            letterSpacing = 1.sp,
-            fontFamily = FontFamily(Font(R.font.fabrik))
-          )
-        ) {
-          append(weatherDto.main?.temp?.roundToInt().toString())
-        }
-        withStyle(
-          style = SpanStyle(
-            color = colorResource(id = R.color.dark_yellow),
-            fontSize = 32.sp,
-            baselineShift = BaselineShift(1.4f),
-            fontWeight = FontWeight.ExtraBold,
-            fontFamily = FontFamily(Font(R.font.fabrik)),
-            letterSpacing = 1.sp
-          )
-        ) {
-          append(" ")
-          append(stringResource(id = R.string.degrees_celsius))
-        }
-      }
+    CurrentTempText(
+      temp = weatherDto.main?.temp?.roundToInt().toString(),
+      textSize = 66
     )
     val image = Utils.getImage(weatherDto.weather?.get(0)?.icon)
     Image(
@@ -214,11 +196,11 @@ fun DescriptionView(
 
 @Composable
 fun CurrentLocationView(
+  modifier: Modifier = Modifier,
   weatherDto: CurrentWeatherDto
 ) {
   Row(
-    modifier = Modifier
-      .padding(start = 30.dp),
+    modifier = modifier,
     verticalAlignment = Alignment.CenterVertically
   ) {
     Icon(
@@ -237,6 +219,125 @@ fun CurrentLocationView(
       )
     )
   }
+}
+
+@Composable
+private fun AdditionalInfoView(weatherDto: CurrentWeatherDto) {
+  Column(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(start = 30.dp)
+  ) {
+    Row(
+      verticalAlignment = Alignment.Bottom
+    ) {
+      Text(
+        text = "Feels like: ",
+        style = TextStyle(
+          color = colorResource(id = R.color.dark_yellow),
+          fontFamily = FontFamily(Font(R.font.fabrik)),
+          letterSpacing = 0.5.sp,
+          fontSize = 20.sp
+        )
+      )
+      CurrentTempText(
+        temp = weatherDto.main?.feelsLike?.roundToInt().toString(),
+        textSize = 24
+      )
+    }
+    val atmosphericPressure = weatherDto.main?.pressure.toString()
+    RowOfAdditionalInfo(
+      modifier = Modifier
+        .padding(top = 10.dp),
+      description = "Atmospheric pressure: ",
+      value = "$atmosphericPressure hPa"
+    )
+    val humidity = weatherDto.main?.humidity.toString()
+    RowOfAdditionalInfo(
+      modifier = Modifier
+        .padding(top = 10.dp),
+      description = "Humidity: ",
+      value = "$humidity %"
+    )
+    val windSpeed = weatherDto.wind?.speed.toString()
+    RowOfAdditionalInfo(
+      modifier = Modifier
+        .padding(top = 10.dp),
+      description = "Wind speed: ",
+      value = "$windSpeed meter/sec"
+    )
+    val cloudiness = weatherDto.clouds?.all.toString()
+    RowOfAdditionalInfo(
+      modifier = Modifier
+        .padding(top = 10.dp),
+      description = "Cloudiness: ",
+      value = "$cloudiness %"
+    )
+  }
+}
+
+@Composable
+private fun RowOfAdditionalInfo(
+  modifier: Modifier = Modifier,
+  description: String,
+  value: String
+) {
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.Bottom
+  ) {
+    Text(
+      text = description,
+      style = TextStyle(
+        color = colorResource(id = R.color.dark_yellow),
+        fontFamily = FontFamily(Font(R.font.fabrik)),
+        letterSpacing = 0.5.sp,
+        fontSize = 20.sp
+      )
+    )
+    Text(
+      text = value,
+      style = TextStyle(
+        color = Color.White,
+        fontFamily = FontFamily(Font(R.font.fabrik)),
+        letterSpacing = 0.5.sp,
+        fontSize = 20.sp
+      )
+    )
+  }
+}
+
+@Composable
+private fun CurrentTempText(temp: String, textSize: Int) {
+  Text(
+    buildAnnotatedString {
+      withStyle(
+        style = SpanStyle(
+          color = Color.White,
+          fontWeight = FontWeight.W600,
+          fontSize = textSize.sp,
+          letterSpacing = 1.sp,
+          fontFamily = FontFamily(Font(R.font.fabrik))
+        )
+      ) {
+        append(temp)
+      }
+      withStyle(
+        style = SpanStyle(
+          color = colorResource(id = R.color.dark_yellow),
+          // "°C" should be half the size of the temp text
+          fontSize = (textSize / 2).sp,
+          baselineShift = BaselineShift(1.4f),
+          fontWeight = FontWeight.ExtraBold,
+          fontFamily = FontFamily(Font(R.font.fabrik)),
+          letterSpacing = 1.sp
+        )
+      ) {
+        append(" ")
+        append(stringResource(id = R.string.degrees_celsius))
+      }
+    }
+  )
 }
 
 @Preview
@@ -270,7 +371,7 @@ fun PreviewDescriptionView() {
 @Composable
 fun PreviewCurrentLocationView() {
   CurrentLocationView(
-    CurrentWeatherDto(
+    weatherDto = CurrentWeatherDto(
       name = "Allentown, New Mexico 31134"
     )
   )

@@ -32,9 +32,10 @@ import com.example.weather.ui.home.views.TitleSection
 
 @Composable
 fun SearchSection(
-  isSearchBarFocused:Boolean,
+  isSearchBarFocused: Boolean,
   onCancelClicked: () -> Unit,
-  focusOfSearchBarWasChanged: (Boolean) -> Unit
+  focusOfSearchBarWasChanged: (Boolean) -> Unit,
+  searchCity: (String) -> Unit
 ) {
   val focusManager = LocalFocusManager.current
 
@@ -63,7 +64,8 @@ fun SearchSection(
     SearchBarView(
       isSearchBarFocused,
       focusOfSearchBarWasChanged = focusOfSearchBarWasChanged,
-      onCancelClicked = onCancelClicked
+      onCancelClicked = onCancelClicked,
+      searchCity = searchCity
     )
   }
 }
@@ -72,10 +74,15 @@ fun SearchSection(
 private fun SearchBarView(
   isSearchBarFocused: Boolean,
   focusOfSearchBarWasChanged: (Boolean) -> Unit,
-  onCancelClicked: () -> Unit
+  onCancelClicked: () -> Unit,
+  searchCity: (String) -> Unit
 ) {
+  val initialText = TextFieldValue("")
   var text by remember {
-    mutableStateOf(TextFieldValue(""))
+    mutableStateOf(initialText)
+  }
+  if (text.text.length > 2) {
+    searchCity(text.text)
   }
   Row(
     modifier = Modifier
@@ -91,7 +98,7 @@ private fun SearchBarView(
           focusOfSearchBarWasChanged(it.isFocused)
         }
         .weight(1f),
-      value = text,
+      value = if (isSearchBarFocused) text else initialText,
       leadingIcon = {
         Icon(
           imageVector = Icons.Outlined.Search,

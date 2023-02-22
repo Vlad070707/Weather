@@ -32,9 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weather.R
-import com.example.weather.data.api.models.FutureWeatherDto
-import com.example.weather.data.api.models.Item
-import com.example.weather.data.api.models.Main
+import com.example.weather.data.api.weather_models.FutureWeatherDto
+import com.example.weather.data.api.weather_models.Item
+import com.example.weather.data.api.weather_models.Main
 import com.example.weather.util.Utils
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat

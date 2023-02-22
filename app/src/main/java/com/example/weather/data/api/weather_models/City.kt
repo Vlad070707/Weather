@@ -1,4 +1,4 @@
-package com.example.weather.data.api.models
+package com.example.weather.data.api.weather_models
 
 
 import com.google.gson.annotations.SerializedName

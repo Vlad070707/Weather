@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.weather.R
+import com.example.weather.ui.home.views.CurrentWeatherSection
 import com.example.weather.ui.home.views.WeatherForNextDaysSection
 import com.example.weather.util.Resource
 

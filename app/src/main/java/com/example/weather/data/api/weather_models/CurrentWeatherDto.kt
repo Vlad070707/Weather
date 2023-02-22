@@ -1,26 +1,32 @@
-package com.example.weather.data.api.models
+package com.example.weather.data.api.weather_models
 
 import com.google.gson.annotations.SerializedName
 
-data class Item(
+data class CurrentWeatherDto(
+  @SerializedName("base")
+  val base: String? = null,
   @SerializedName("clouds")
   val clouds: Clouds? = null,
+  @SerializedName("cod")
+  val cod: Int? = null,
+  @SerializedName("coord")
+  val coord: Coord? = null,
   @SerializedName("dt")
   val dt: Int? = null,
-  @SerializedName("dt_txt")
-  val dtTxt: String? = null,
+  @SerializedName("id")
+  val id: Int? = null,
   @SerializedName("main")
   val main: Main? = null,
-  @SerializedName("pop")
-  val pop: Double? = null,
-  @SerializedName("snow")
-  val snow: Snow? = null,
+  @SerializedName("name")
+  val name: String? = null,
   @SerializedName("sys")
   val sys: Sys? = null,
+  @SerializedName("timezone")
+  val timezone: Int? = null,
   @SerializedName("visibility")
   val visibility: Int? = null,
   @SerializedName("weather")
   val weather: List<Weather?>? = null,
   @SerializedName("wind")
   val wind: Wind? = null
-)
+) : WeatherDto
