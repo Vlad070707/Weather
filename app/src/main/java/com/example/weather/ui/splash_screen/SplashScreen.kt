@@ -1,32 +1,51 @@
 package com.example.weather.ui.splash_screen
 
-import android.annotation.SuppressLint
-import android.view.animation.OvershootInterpolator
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.weather.R
 import com.example.weather.ui.bottom_navigation.Screen
-import com.example.weather.ui.home.views.TitleSection
+import com.example.weather.ui.home.sections.TitleSection
 import kotlinx.coroutines.delay
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun SplashScreen(
-  navController: NavHostController
+  navController: NavHostController,
+  viewModel: SplashScreenViewModel = hiltViewModel()
 ) {
+
+  val savedCity = viewModel.currentCityState.collectAsState()
+  LoadingView()
+  LaunchedEffect(true) {
+    delay(3000)
+    if (savedCity.value.isNotEmpty()) {
+      Log.i("myLogs", "SplashScreen: NAVIGATE TO HOME SCREEN")
+      navController.navigate(Screen.Home.route) {
+        popUpTo(0)
+      }
+    } else {
+      Log.i("myLogs", "SplashScreen: NAVIGATE TO LOCATION SCREEN")
+      navController.navigate(Screen.Location.route) {
+        popUpTo(0)
+      }
+    }
+  }
+
+
+}
+
+@Composable
+private fun LoadingView() {
   Column(
     modifier = Modifier
       .fillMaxSize(),
@@ -49,23 +68,5 @@ fun SplashScreen(
         .padding(20.dp),
       color = colorResource(id = R.color.dark_yellow)
     )
-
-    val scale = remember {
-      Animatable(0f)
-    }
-    LaunchedEffect(key1 = true) {
-      scale.animateTo(
-        targetValue = 0.3f,
-        animationSpec = tween(
-          durationMillis = 500,
-          easing = {
-            OvershootInterpolator(2f).getInterpolation(it)
-          })
-      )
-      delay(3000)
-      navController.navigate(Screen.Home.route) {
-        popUpTo(0)
-      }
-    }
   }
 }

@@ -1,4 +1,4 @@
-package com.example.weather.ui.home.views
+package com.example.weather.ui.home.sections
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

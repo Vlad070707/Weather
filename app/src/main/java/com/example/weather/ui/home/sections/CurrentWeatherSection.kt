@@ -1,7 +1,6 @@
-package com.example.weather.ui.home.views
+package com.example.weather.ui.home.sections
 
 import android.annotation.SuppressLint
-import android.widget.Space
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.*

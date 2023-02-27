@@ -1,4 +1,4 @@
-package com.example.weather.ui.home.views
+package com.example.weather.ui.home.sections
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image

@@ -30,5 +30,4 @@ object WeatherApiModule {
   fun provideWeatherRepo(
     api: WeatherApi
   ) = WeatherRepository(api)
-
 }
