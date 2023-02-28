@@ -6,4 +6,6 @@
   <string name="next_week">Next 5 Days</string>
   <string name="degrees_celsius">°C</string>
   <string name="title">Weather assist</string>
+  <string name="error_message">Oops… Looks like something went wrong. Please, check your network connection and try again.</string>
+  <string name="try_again">Try again</string>
 </resources>

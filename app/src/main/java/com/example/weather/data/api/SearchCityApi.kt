@@ -11,7 +11,7 @@ interface SearchCityApi {
   @GET(END_POINT_SEARCH_CITY)
   suspend fun searchCity(
     @Query("name_startsWith") query: String,
-    @Query("maxRows") maxRows: Int = 10,
+    @Query("maxRows") maxRows: Int = 6,
     @Query("username") userName: String = SEARCH_CITY_USER_NAME
   ): ListOfHintsDto
 }

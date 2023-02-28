@@ -2,10 +2,7 @@ package com.example.weather.ui.location.sections
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
@@ -23,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.example.weather.R
 import com.example.weather.data.api.city_models.ListOfHintsDto
 import com.example.weather.util.Resource
+import java.util.*
 
 @Composable
 fun HintsSection(
@@ -35,7 +33,8 @@ fun HintsSection(
         modifier = Modifier
           .fillMaxWidth()
           .background(MaterialTheme.colorScheme.background)
-          .wrapContentSize(align = Alignment.Center),
+          .wrapContentSize(align = Alignment.Center)
+          .padding(top = 30.dp),
         color = colorResource(id = R.color.dark_yellow)
       )
     }
@@ -46,19 +45,12 @@ fun HintsSection(
           verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
           items(geonamesList) { geoname ->
-            geoname?.toponymName?.let { name ->
-              Text(
-                modifier = Modifier
-                  .clickable {
-                    onHintClicked(name)
-                  },
-                text = name,
-                style = TextStyle(
-                  color = colorResource(id = R.color.dark_yellow),
-                  fontSize = 22.sp,
-                  fontFamily = FontFamily(Font(R.font.fabrik)),
-                  letterSpacing = 0.5.sp,
-                )
+            geoname?.name?.let { name ->
+              val countryCode = geoname.countryCode
+              HintItem(
+                name = name,
+                countryCode = countryCode,
+                onHintClicked = onHintClicked
               )
             }
           }
@@ -66,4 +58,51 @@ fun HintsSection(
       }
     }
   }
+}
+
+@Composable
+private fun HintItem(
+  name: String,
+  countryCode: String?,
+  onHintClicked: (String) -> Unit
+) {
+  Row(
+    modifier = Modifier
+      .fillMaxWidth(),
+    horizontalArrangement = Arrangement.SpaceBetween
+  ) {
+    Text(
+      modifier = Modifier
+        .clickable {
+          onHintClicked(name)
+        },
+      text = name,
+      style = TextStyle(
+        color = colorResource(id = R.color.dark_yellow),
+        fontSize = 22.sp,
+        fontFamily = FontFamily(Font(R.font.fabrik)),
+        letterSpacing = 0.5.sp,
+      )
+    )
+    countryCode?.let {
+      Text(
+        text = countryCodeToEmojiFlag(it),
+        fontSize = 22.sp,
+      )
+    }
+  }
+}
+
+fun countryCodeToEmojiFlag(countryCode: String): String {
+  return countryCode
+    .uppercase(Locale.getDefault())
+    .map { char ->
+      Character.codePointAt("$char", 0) - 0x41 + 0x1F1E6
+    }
+    .map { codePoint ->
+      Character.toChars(codePoint)
+    }
+    .joinToString(separator = "") { charArray ->
+      String(charArray)
+    }
 }

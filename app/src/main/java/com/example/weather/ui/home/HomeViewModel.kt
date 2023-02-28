@@ -29,12 +29,14 @@ class HomeViewModel @Inject constructor(
     updateWeatherData()
   }
 
-  private fun updateWeatherData() {
+  fun updateWeatherData() {
     viewModelScope.launch {
       launch(Dispatchers.IO) {
+        _currentWeatherState.value = Resource.Loading()
         _currentWeatherState.value = weatherRepository.getCurrentWeather(currentCityState.value)
       }
       launch(Dispatchers.IO) {
+        _futureWeatherState.value = Resource.Loading()
         _futureWeatherState.value = weatherRepository.getFutureWeather(currentCityState.value)
       }
     }
