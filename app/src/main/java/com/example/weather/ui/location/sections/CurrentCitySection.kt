@@ -1,4 +1,4 @@
-package com.example.weather.ui.location.views
+package com.example.weather.ui.location.sections
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*

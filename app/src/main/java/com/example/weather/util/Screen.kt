@@ -1,4 +1,4 @@
-package com.example.weather.ui.bottom_navigation
+package com.example.weather.util
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home

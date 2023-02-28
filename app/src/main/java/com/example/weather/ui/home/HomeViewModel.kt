@@ -1,12 +1,11 @@
 package com.example.weather.ui.home
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weather.data.api.weather_models.CurrentWeatherDto
 import com.example.weather.data.api.weather_models.FutureWeatherDto
 import com.example.weather.data.repository.WeatherRepository
-import com.example.weather.data_store.UserPreferencesRepository
+import com.example.weather.data.repository.UserPreferencesRepository
+import com.example.weather.ui.BaseViewModel
 import com.example.weather.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -17,8 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
   private val weatherRepository: WeatherRepository,
-  private val userPreferencesRepository: UserPreferencesRepository
-) : ViewModel() {
+  userPreferencesRepository: UserPreferencesRepository
+) : BaseViewModel(userPreferencesRepository) {
 
   private val _currentWeatherState = MutableStateFlow<Resource<CurrentWeatherDto>>(Resource.Loading())
   val currentWeatherState: StateFlow<Resource<CurrentWeatherDto>> = _currentWeatherState
@@ -26,30 +25,17 @@ class HomeViewModel @Inject constructor(
   private val _futureWeatherState = MutableStateFlow<Resource<FutureWeatherDto>>(Resource.Loading())
   val futureWeatherState: StateFlow<Resource<FutureWeatherDto>> = _futureWeatherState
 
-  private val _currentCityState = MutableStateFlow("")
-
   init {
-    initCity()
     updateWeatherData()
   }
 
-  fun initCity() {
-    viewModelScope.launch {
-      userPreferencesRepository.getCity.collect { city ->
-        city.let {
-          _currentCityState.value = it
-        }
-      }
-    }
-  }
-
-  fun updateWeatherData() {
+  private fun updateWeatherData() {
     viewModelScope.launch {
       launch(Dispatchers.IO) {
-        _currentWeatherState.value = weatherRepository.getCurrentWeather(_currentCityState.value)
+        _currentWeatherState.value = weatherRepository.getCurrentWeather(currentCityState.value)
       }
       launch(Dispatchers.IO) {
-        _futureWeatherState.value = weatherRepository.getFutureWeather(_currentCityState.value)
+        _futureWeatherState.value = weatherRepository.getFutureWeather(currentCityState.value)
       }
     }
   }

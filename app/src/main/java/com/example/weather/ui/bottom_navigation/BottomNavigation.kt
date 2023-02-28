@@ -21,26 +21,37 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.weather.R
+import com.example.weather.util.Screen
 
 @Composable
-fun BottomNavigation(navController: NavController) {
+fun BottomNavigation(
+  navController: NavController
+) {
   val items = Screen.Items.list
-  var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
 
-  Row(
-    modifier = Modifier
-      .background(colorResource(id = R.color.dark_blue))
-      .padding(10.dp)
-      .fillMaxWidth(),
-    horizontalArrangement = Arrangement.SpaceAround,
-    verticalAlignment = Alignment.CenterVertically
-  ) {
-    items.forEach { item ->
-      BottomNavigationItem(item = item, isSelected = item.route == currentScreen.route) {
-        currentScreen = item
-        navController.navigate(item.route)
+  var currentScreen = when (navController.currentBackStackEntryAsState().value?.destination?.route) {
+    Screen.Location.route -> Screen.Location
+    Screen.Home.route -> Screen.Home
+    else -> null
+  }
+
+  currentScreen?.let { screen ->
+    Row(
+      modifier = Modifier
+        .background(colorResource(id = R.color.dark_blue))
+        .padding(10.dp)
+        .fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceAround,
+      verticalAlignment = Alignment.CenterVertically
+    ) {
+      items.forEach { item ->
+        BottomNavigationItem(item = item, isSelected = item.route == screen.route) {
+          currentScreen = item
+          navController.navigate(item.route)
+        }
       }
     }
   }
@@ -93,7 +104,5 @@ fun PreviewBottomNavigation() {
 @Preview
 @Composable
 fun PreviewBottomNavigationItem() {
-  BottomNavigationItem(item = Screen.Home, isSelected = true) {
-
-  }
+  BottomNavigationItem(item = Screen.Home, isSelected = true) { }
 }

@@ -1,4 +1,4 @@
-package com.example.weather.data_store
+package com.example.weather.data.repository
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

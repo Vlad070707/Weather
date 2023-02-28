@@ -1,4 +1,4 @@
-package com.example.weather.ui.location.views
+package com.example.weather.ui.location.sections
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -80,7 +80,10 @@ private fun SearchBarView(
   var text by remember {
     mutableStateOf(initialText)
   }
-  if (text.text.length > 2) {
+  if (!isSearchBarFocused) {
+    text = initialText
+  }
+  if (text.text.isNotEmpty()) {
     searchCity(text.text)
   }
   Row(
