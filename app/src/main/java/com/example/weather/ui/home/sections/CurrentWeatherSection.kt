@@ -42,19 +42,19 @@ import kotlin.math.roundToInt
 @SuppressLint("RememberReturnType")
 @Composable
 fun CurrentWeatherSection(
-  todayWeatherDto: CurrentWeatherDto
+  isShowMoreDetailsClicked: Boolean,
+  todayWeatherDto: CurrentWeatherDto,
+  onShowMoreDetailsClicked: (Boolean) -> Unit
 ) {
-  var showMoreDetails by remember {
-    mutableStateOf(false)
-  }
+
 
   val rotation = remember {
     Animatable(initialValue = 0f)
   }
 
-  LaunchedEffect(showMoreDetails) {
+  LaunchedEffect(isShowMoreDetailsClicked) {
     rotation.animateTo(
-      targetValue = if (showMoreDetails) 180f else 0f,
+      targetValue = if (isShowMoreDetailsClicked) 180f else 0f,
       animationSpec = tween(durationMillis = 800),
     )
   }
@@ -80,10 +80,10 @@ fun CurrentWeatherSection(
         CurrentDateView()
         DescriptionView(weatherDto = todayWeatherDto)
         CurrentTempView(weatherDto = todayWeatherDto)
-        AnimatedVisibility(visible = showMoreDetails) {
+        AnimatedVisibility(visible = isShowMoreDetailsClicked) {
           AdditionalInfoView(weatherDto = todayWeatherDto)
         }
-        val modifierForLocationView = if (showMoreDetails) {
+        val modifierForLocationView = if (isShowMoreDetailsClicked) {
           Modifier
             .padding(
               start = 30.dp,
@@ -103,7 +103,7 @@ fun CurrentWeatherSection(
           .fillMaxWidth()
           .align(Alignment.CenterHorizontally)
           .clickable {
-            showMoreDetails = !showMoreDetails
+            onShowMoreDetailsClicked(!isShowMoreDetailsClicked)
           }
           .size(60.dp)
           .rotate(rotation.value),
@@ -380,10 +380,11 @@ fun PreviewCurrentLocationView() {
 @Composable
 fun PreviewCurrentWeatherSection() {
   CurrentWeatherSection(
+    true,
     CurrentWeatherDto(
       main = Main(temp = 30.0),
       name = "Allentown, New Mexico 31134",
       weather = listOf(Weather(icon = "01d", description = "overcast clouds"))
     )
-  )
+  ) {}
 }

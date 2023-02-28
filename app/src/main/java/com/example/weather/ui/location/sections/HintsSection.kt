@@ -39,7 +39,10 @@ fun HintsSection(
       )
     }
     else -> {
-      hintsDto.data?.geonames?.let { geonamesList ->
+      val listOgHints = hintsDto.data?.geonames?.distinctBy {
+        it?.name
+      }
+      listOgHints?.let { geonamesList ->
         LazyColumn(
           contentPadding = PaddingValues(20.dp),
           verticalArrangement = Arrangement.spacedBy(8.dp)

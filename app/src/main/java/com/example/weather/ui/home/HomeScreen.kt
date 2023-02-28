@@ -1,11 +1,11 @@
 package com.example.weather.ui.home
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -27,6 +27,10 @@ fun HomeScreen(
   val isLoading = currentWeatherState.value is Resource.Loading || futureWeatherState.value is Resource.Loading
   val isSuccess = currentWeatherState.value is Resource.Success && futureWeatherState.value is Resource.Success
 
+  var isShowMoreDetailsClicked by remember {
+    mutableStateOf(false)
+  }
+
   when (isLoading) {
     true -> {
       CircularProgressIndicator(
@@ -45,11 +49,20 @@ fun HomeScreen(
             .background(MaterialTheme.colorScheme.background)
         ) {
           CurrentWeatherSection(
+            isShowMoreDetailsClicked,
             currentWeatherState.value.data!!
-          )
-          WeatherForNextDaysSection(
-            futureWeatherState.value.data!!
-          )
+          ) {
+            isShowMoreDetailsClicked = it
+          }
+          AnimatedVisibility(
+            visible = !isShowMoreDetailsClicked,
+            enter = fadeIn(),
+            exit = fadeOut()
+          ) {
+            WeatherForNextDaysSection(
+              futureWeatherState.value.data!!
+            )
+          }
         }
       } else {
         ErrorSection {
