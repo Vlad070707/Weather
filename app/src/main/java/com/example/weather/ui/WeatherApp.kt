@@ -18,7 +18,7 @@ fun WeatherApp() {
   WeatherTheme {
     val navController = rememberNavController()
     val showNavigationBar = navController.currentBackStackEntryAsState().value?.destination?.route?.let { route ->
-      route != (Screen.Splash.route)
+      route != (Screen.Splash().route)
     } ?: false
 
     Surface {

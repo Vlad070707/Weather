@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -28,15 +29,25 @@ import com.example.weather.util.Screen
 
 @Composable
 fun BottomNavigation(
-  navController: NavController
+  navController: NavController,
+  viewModel: BottomNavigationViewModel = hiltViewModel()
 ) {
-  val items = Screen.Items.list
+  val currentCityState = viewModel.currentCityState.collectAsState()
 
   var currentScreen = when (navController.currentBackStackEntryAsState().value?.destination?.route) {
-    Screen.Location.route -> Screen.Location
-    Screen.Home.route -> Screen.Home
+    Screen.Location().route -> Screen.Location()
+    Screen.Home().route -> Screen.Home()
     else -> null
   }
+
+  val isHomeAvailable = currentCityState.value.isNotEmpty()
+
+  val homeScreen = Screen.Home().apply {
+    if (!isHomeAvailable){
+      isAvailable = false
+    }
+  }
+  val items = listOf(homeScreen, Screen.Location())
 
   currentScreen?.let { screen ->
     Row(
@@ -48,7 +59,7 @@ fun BottomNavigation(
       verticalAlignment = Alignment.CenterVertically
     ) {
       items.forEach { item ->
-        BottomNavigationItem(item = item, isSelected = item.route == screen.route) {
+        BottomNavigationItem(item = item, isSelected = item.route == screen.route, isEnabled = item.isAvailable) {
           currentScreen = item
           navController.navigate(item.route)
         }
@@ -58,14 +69,22 @@ fun BottomNavigation(
 }
 
 @Composable
-fun BottomNavigationItem(item: Screen, isSelected: Boolean, onClick: () -> Unit) {
+fun BottomNavigationItem(item: Screen, isSelected: Boolean, isEnabled: Boolean = true, onClick: () -> Unit) {
   val background = if (isSelected) colorResource(id = R.color.dark_yellow) else Color.Transparent
-  val contentColor = if (isSelected) MaterialTheme.colorScheme.background else colorResource(id = R.color.dark_yellow)
+  val contentColor = when {
+    isSelected -> MaterialTheme.colorScheme.background
+    !isEnabled -> Color.Gray
+    else -> colorResource(id = R.color.dark_yellow)
+  }
   Box(
     modifier = Modifier
       .clip(RoundedCornerShape(25.dp))
       .background(background)
-      .clickable(onClick = onClick)
+      .clickable(onClick = {
+        if (isEnabled) {
+          onClick()
+        }
+      })
       .padding(horizontal = 15.dp)
   ) {
     Row(
@@ -104,5 +123,5 @@ fun PreviewBottomNavigation() {
 @Preview
 @Composable
 fun PreviewBottomNavigationItem() {
-  BottomNavigationItem(item = Screen.Home, isSelected = true) { }
+//  BottomNavigationItem(item = Screen.Home, isSelected = true) { }
 }

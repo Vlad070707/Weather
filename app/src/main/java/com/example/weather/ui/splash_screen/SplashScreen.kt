@@ -18,11 +18,11 @@ fun SplashScreen(
   LaunchedEffect(true) {
     delay(3000)
     if (savedCity.value.isNotEmpty()) {
-      navController.navigate(Screen.Home.route) {
+      navController.navigate(Screen.Home().route) {
         popUpTo(0)
       }
     } else {
-      navController.navigate(Screen.Location.route) {
+      navController.navigate(Screen.Location().route) {
         popUpTo(0)
       }
     }

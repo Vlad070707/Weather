@@ -15,15 +15,15 @@ fun WeatherNavGraph(
 ) {
   NavHost(
     navController = navController,
-    startDestination = Screen.Splash.route,
+    startDestination = Screen.Splash().route,
   ) {
-    composable(Screen.Home.route) {
+    composable(Screen.Home().route) {
       HomeScreen()
     }
-    composable(Screen.Location.route) {
+    composable(Screen.Location().route) {
       LocationScreen()
     }
-    composable(Screen.Splash.route) {
+    composable(Screen.Splash().route) {
       SplashScreen(navController = navController)
     }
   }
