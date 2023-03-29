@@ -65,4 +65,6 @@ dependencies {
 
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     implementation 'androidx.compose.material3:material3:1.1.0-alpha08'
+
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }

@@ -15,8 +15,14 @@ abstract class BaseViewModel(
     val currentCityState: StateFlow<String> = _currentCityState
 
     init {
+        updateCurrentCityState()
+    }
+
+    fun updateCurrentCityState() {
         viewModelScope.launch {
-            _currentCityState.value = getSavedLocationUseCase()
+            getSavedLocationUseCase().collect { city ->
+                _currentCityState.value = city
+            }
         }
     }
 }

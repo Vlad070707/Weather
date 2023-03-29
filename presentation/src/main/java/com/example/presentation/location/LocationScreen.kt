@@ -54,6 +54,7 @@ fun LocationScreen(
             AnimatedVisibility(visible = isSearchBarFocused) {
                 HintsSection(hintsDto = listOfHintsDtoState.value) {
                     viewModel.saveCurrentCity(it)
+                    viewModel.updateCurrentCityState()
                     isSearchBarFocused = !isSearchBarFocused
                 }
             }

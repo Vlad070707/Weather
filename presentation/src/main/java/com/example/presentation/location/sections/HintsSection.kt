@@ -1,11 +1,9 @@
 package com.example.presentation.location.sections
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -32,17 +30,15 @@ fun HintsSection(
 ) {
     Surface(
         modifier = Modifier
-            .padding(20.dp),
-        shape = RoundedCornerShape(25.dp),
-        color = colorResource(id = R.color.dark_blue)
+            .fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
         when (hintsDto) {
-            is Resource.Loading<*> -> {
+            is Resource.Loading -> {
                 CircularProgressIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.background)
-                        .wrapContentSize(align = Alignment.Center)
+                        .wrapContentSize(align = Alignment.TopCenter)
                         .padding(top = 30.dp),
                     color = colorResource(id = R.color.dark_yellow)
                 )
