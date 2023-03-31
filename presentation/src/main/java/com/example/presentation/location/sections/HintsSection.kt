@@ -1,16 +1,17 @@
 package com.example.presentation.location.sections
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.example.domain.search.model.ListOfHintsDto
 import com.example.domain.util.Resource
 import com.example.presentation.R
+import com.example.presentation.base.Loader
 import java.util.*
 
 @Composable
@@ -28,19 +30,17 @@ fun HintsSection(
     hintsDto: Resource<ListOfHintsDto>,
     onHintClicked: (String) -> Unit
 ) {
-    Surface(
+    Box(
         modifier = Modifier
-            .fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+            .fillMaxSize()
+            .background(Color.Red),
+        contentAlignment = Alignment.TopCenter
     ) {
         when (hintsDto) {
             is Resource.Loading -> {
-                CircularProgressIndicator(
+                Loader(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentSize(align = Alignment.TopCenter)
-                        .padding(top = 30.dp),
-                    color = colorResource(id = R.color.dark_yellow)
+                        .size(100.dp)
                 )
             }
             else -> {
@@ -80,19 +80,31 @@ private fun HintItem(
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            modifier = Modifier
-                .clickable {
-                    onHintClicked(name)
-                },
-            text = name,
-            style = TextStyle(
-                color = colorResource(id = R.color.dark_yellow),
-                fontSize = 22.sp,
-                fontFamily = FontFamily(Font(R.font.fabrik)),
-                letterSpacing = 0.5.sp,
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(20.dp),
+                imageVector = Icons.Outlined.LocationOn,
+                tint = colorResource(id = R.color.dark_yellow),
+                contentDescription = null
             )
-        )
+            Text(
+                modifier = Modifier
+                    .clickable {
+                        onHintClicked(name)
+                    }
+                    .padding(start = 20.dp),
+                text = name,
+                style = TextStyle(
+                    color = colorResource(id = R.color.dark_yellow),
+                    fontSize = 22.sp,
+                    fontFamily = FontFamily(Font(R.font.fabrik)),
+                    letterSpacing = 0.5.sp,
+                )
+            )
+        }
         countryCode?.let {
             Text(
                 text = countryCodeToEmojiFlag(it),
@@ -119,5 +131,5 @@ fun countryCodeToEmojiFlag(countryCode: String): String {
 @Preview
 @Composable
 private fun HintsSectionPreview() {
-    HintsSection(hintsDto = Resource.Success(ListOfHintsDto()), onHintClicked = {})
+    HintsSection(hintsDto = Resource.Loading(), onHintClicked = {})
 }

@@ -47,7 +47,6 @@ fun CurrentWeatherSection(
   onShowMoreDetailsClicked: (Boolean) -> Unit
 ) {
 
-
   val rotation = remember {
     Animatable(initialValue = 0f)
   }

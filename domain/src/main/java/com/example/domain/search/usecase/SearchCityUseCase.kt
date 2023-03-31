@@ -4,6 +4,7 @@ import com.example.domain.search.SearchRepository
 import com.example.domain.search.model.ListOfHintsDto
 import com.example.domain.util.Resource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 class SearchCityUseCase(private val repository: SearchRepository) {
@@ -13,6 +14,7 @@ class SearchCityUseCase(private val repository: SearchRepository) {
     ): Resource<ListOfHintsDto> {
         var listOfHints: Resource<ListOfHintsDto>
         withContext(Dispatchers.IO) {
+//            delay(5000)
             listOfHints = repository.searchCity(query = query)
         }
         return listOfHints
