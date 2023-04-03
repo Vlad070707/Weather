@@ -19,29 +19,29 @@ import com.example.presentation.R
 
 @Composable
 fun TitleSection(
-  modifier: Modifier
+    modifier: Modifier
 ) {
-  Box(
-    modifier = modifier,
-    contentAlignment = Alignment.Center
-  ) {
-    Text(
-      modifier = Modifier.fillMaxWidth(),
-      text = stringResource(id = R.string.title),
-      textAlign = TextAlign.Center,
-      style = TextStyle(
-        color = Color.White,
-        fontWeight = FontWeight.Medium,
-        fontFamily = FontFamily(Font(R.font.fabrik)),
-        fontSize = 30.sp,
-        letterSpacing = 1.5.sp
-      )
-    )
-  }
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(id = R.string.title),
+            textAlign = TextAlign.Center,
+            style = TextStyle(
+                color = Color.White,
+                fontWeight = FontWeight.Medium,
+                fontFamily = FontFamily(Font(R.font.fabrik)),
+                fontSize = 30.sp,
+                letterSpacing = 1.5.sp
+            )
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewTitleSection() {
-  TitleSection(Modifier)
+    TitleSection(Modifier)
 }

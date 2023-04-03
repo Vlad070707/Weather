@@ -29,119 +29,119 @@ import com.example.presentation.R
 
 @Composable
 fun CurrentCitySection(city: String) {
-  Surface(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(20.dp),
-    shape = RoundedCornerShape(25.dp),
-    color = colorResource(id = R.color.dark_blue)
-  ) {
-    if (city.isEmpty()) {
-      NoSavedLocationView()
-    } else {
-      LocationView(city = city)
+    Surface(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(20.dp),
+        shape = RoundedCornerShape(25.dp),
+        color = colorResource(id = R.color.dark_blue)
+    ) {
+        if (city.isEmpty()) {
+            NoSavedLocationView()
+        } else {
+            LocationView(city = city)
+        }
     }
-  }
 
 }
 
 @Composable
 private fun NoSavedLocationView() {
-  Column(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(
-        horizontal = 15.dp,
-        vertical = 25.dp
-      ),
-    horizontalAlignment = Alignment.CenterHorizontally
-  ) {
-    Image(
-      modifier = Modifier
-        .size(60.dp),
-      alignment = Alignment.Center,
-      painter = painterResource(id = R.drawable.no_location),
-      contentDescription = null,
-      colorFilter = ColorFilter.tint(color = colorResource(id = R.color.dark_yellow))
-    )
-    Text(
-      modifier = Modifier
-        .padding(
-          top = 25.dp
-        ),
-      text = "There is no saved city. Click on \"Search your city\" above and please select the city in which you would like to track the weather",
-      style = TextStyle(
-        color = Color.White,
-        fontSize = 24.sp,
-        fontFamily = FontFamily(Font(R.font.fabrik)),
-        letterSpacing = 0.5.sp,
-      ),
-      textAlign = TextAlign.Center
-    )
-  }
+    Column(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(
+            horizontal = 15.dp,
+            vertical = 25.dp
+          ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            modifier = Modifier
+                .size(60.dp),
+            alignment = Alignment.Center,
+            painter = painterResource(id = R.drawable.no_location),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(color = colorResource(id = R.color.dark_yellow))
+        )
+        Text(
+            modifier = Modifier
+                .padding(
+                    top = 25.dp
+                ),
+            text = "There is no saved city. Click on \"Search your city\" above and please select the city in which you would like to track the weather",
+            style = TextStyle(
+                color = Color.White,
+                fontSize = 24.sp,
+                fontFamily = FontFamily(Font(R.font.fabrik)),
+                letterSpacing = 0.5.sp,
+            ),
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
 @Composable
 fun LocationView(city: String) {
-  Row(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(
-        horizontal = 15.dp,
-        vertical = 25.dp
-      ),
-    verticalAlignment = Alignment.CenterVertically
-  ) {
-    Icon(
-      modifier = Modifier
-        .size(60.dp),
-      imageVector = Icons.Outlined.LocationOn,
-      tint = colorResource(id = R.color.dark_yellow),
-      contentDescription = null
-    )
-    Text(
-      modifier = Modifier
-        .padding(
-          horizontal = 10.dp,
-          vertical = 25.dp
+    Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(
+            horizontal = 15.dp,
+            vertical = 25.dp
+          ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier
+                .size(60.dp),
+            imageVector = Icons.Outlined.LocationOn,
+            tint = colorResource(id = R.color.dark_yellow),
+            contentDescription = null
         )
-        .fillMaxWidth(),
-      text = buildAnnotatedString {
-        append("Your saved city is\n")
-        withStyle(
-          style = SpanStyle(
-            fontSize = 36.sp,
-            color = colorResource(id = R.color.dark_yellow)
-          )
-        ) {
-          append(city)
-        }
-      },
-      style = TextStyle(
-        color = Color.White,
-        fontSize = 26.sp,
-        fontFamily = FontFamily(Font(R.font.fabrik)),
-        letterSpacing = 0.5.sp,
-      ),
-      textAlign = TextAlign.Center
-    )
-  }
+        Text(
+            modifier = Modifier
+              .padding(
+                horizontal = 10.dp,
+                vertical = 25.dp
+              )
+              .fillMaxWidth(),
+            text = buildAnnotatedString {
+                append("Your saved city is\n")
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 36.sp,
+                        color = colorResource(id = R.color.dark_yellow)
+                    )
+                ) {
+                    append(city)
+                }
+            },
+            style = TextStyle(
+                color = Color.White,
+                fontSize = 26.sp,
+                fontFamily = FontFamily(Font(R.font.fabrik)),
+                letterSpacing = 0.5.sp,
+            ),
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewCurrentCitySection() {
-  CurrentCitySection(city = "")
+    CurrentCitySection(city = "")
 }
 
 @Preview
 @Composable
 fun PreviewNoSavedLocationView() {
-  NoSavedLocationView()
+    NoSavedLocationView()
 }
 
 @Preview
 @Composable
 fun PreviewLocationView() {
-  LocationView("Kyiv")
+    LocationView("Kyiv")
 }

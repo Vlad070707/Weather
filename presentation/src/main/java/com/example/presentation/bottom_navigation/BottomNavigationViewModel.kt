@@ -7,5 +7,5 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BottomNavigationViewModel @Inject constructor(
-  getSavedLocationUseCase: GetSavedLocationUseCase
+    getSavedLocationUseCase: GetSavedLocationUseCase
 ) : BaseViewModel(getSavedLocationUseCase)

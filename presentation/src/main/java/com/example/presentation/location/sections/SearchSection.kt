@@ -31,128 +31,120 @@ import com.example.presentation.home.sections.TitleSection
 
 @Composable
 fun SearchSection(
-  isSearchBarFocused: Boolean,
-  onCancelClicked: () -> Unit,
-  focusOfSearchBarWasChanged: (Boolean) -> Unit,
-  searchCity: (String) -> Unit
+    isSearchBarFocused: Boolean,
+    onCancelClicked: () -> Unit,
+    focusOfSearchBarWasChanged: (Boolean) -> Unit,
+    searchCity: (String) -> Unit
 ) {
-  val focusManager = LocalFocusManager.current
+    val focusManager = LocalFocusManager.current
 
-  if (!isSearchBarFocused) {
-    focusManager.clearFocus()
-  }
-
-//  val topPadding by animateDpAsState(
-//    if (!isSearchBarFocused) 40.dp else 15.dp,
-////    animationSpec = spring(
-////      dampingRatio = Spring.DampingRatioLowBouncy,
-////      stiffness = Spring.StiffnessHigh
-////    )
-//  )
-
-  Column(
-    modifier = Modifier
-      .padding(top = 20.dp)
-  ) {
-    AnimatedVisibility(visible = !isSearchBarFocused) {
-      TitleSection(
-        modifier = Modifier
-          .fillMaxWidth()
-      )
+    if (!isSearchBarFocused) {
+        focusManager.clearFocus()
     }
-    SearchBarView(
-      isSearchBarFocused,
-      focusOfSearchBarWasChanged = focusOfSearchBarWasChanged,
-      onCancelClicked = onCancelClicked,
-      searchCity = searchCity
-    )
-  }
+
+    Column(
+        modifier = Modifier
+            .padding(top = 20.dp)
+    ) {
+        AnimatedVisibility(visible = !isSearchBarFocused) {
+            TitleSection(
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+        }
+        SearchBarView(
+            isSearchBarFocused,
+            focusOfSearchBarWasChanged = focusOfSearchBarWasChanged,
+            onCancelClicked = onCancelClicked,
+            searchCity = searchCity
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchBarView(
-  isSearchBarFocused: Boolean,
-  focusOfSearchBarWasChanged: (Boolean) -> Unit,
-  onCancelClicked: () -> Unit,
-  searchCity: (String) -> Unit
+    isSearchBarFocused: Boolean,
+    focusOfSearchBarWasChanged: (Boolean) -> Unit,
+    onCancelClicked: () -> Unit,
+    searchCity: (String) -> Unit
 ) {
-  val initialText = TextFieldValue("")
-  var text by remember {
-    mutableStateOf(initialText)
-  }
-  if (!isSearchBarFocused) {
-    text = initialText
-  }
-  if (text.text.isNotEmpty()) {
-    searchCity(text.text)
-  }
-  Row(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(horizontal = 20.dp)
-      .padding(top = if (isSearchBarFocused) 0.dp else 20.dp)
-      .background(Color.Transparent),
-    verticalAlignment = Alignment.CenterVertically
-  ) {
-    TextField(
-      modifier = Modifier
-        .onFocusChanged {
-          focusOfSearchBarWasChanged(it.isFocused)
-        }
-        .weight(1f),
-      value = if (isSearchBarFocused) text else initialText,
-      leadingIcon = {
-        Icon(
-          imageVector = Icons.Outlined.Search,
-          contentDescription = null,
-          tint = colorResource(id = R.color.dark_yellow)
-        )
-      },
-      onValueChange = { newText ->
-        text = newText
-      },
-      placeholder = {
-        Text(
-          text = "Search your city",
-          style = TextStyle(
-            color = Color.White,
-            fontSize = 18.sp,
-            fontFamily = FontFamily(Font(R.font.fabrik)),
-            letterSpacing = 0.5.sp,
-          )
-        )
-      },
-      singleLine = true,
-      shape = RoundedCornerShape(25.dp),
-      colors = TextFieldDefaults.textFieldColors(
-        focusedTextColor = Color.White,
-        unfocusedTextColor = Color.White,
-        cursorColor = Color.White,
-        focusedIndicatorColor = Color.Transparent,
-        unfocusedIndicatorColor = Color.Transparent,
-        containerColor = colorResource(id = R.color.dark_blue)
-      )
-    )
-    AnimatedVisibility(visible = isSearchBarFocused) {
-      Text(
-        modifier = Modifier
-          .clickable {
-            onCancelClicked()
-            text = TextFieldValue("")
-          }
-          .weight(1f)
-          .padding(start = 15.dp)
-          .animateContentSize(),
-        text = "Cancel",
-        style = TextStyle(
-          color = colorResource(id = R.color.dark_yellow),
-          fontSize = 20.sp,
-          fontFamily = FontFamily(Font(R.font.fabrik)),
-        )
-      )
+    val initialText = TextFieldValue("")
+    var text by remember {
+        mutableStateOf(initialText)
     }
-  }
+    if (!isSearchBarFocused) {
+        text = initialText
+    }
+    if (text.text.isNotEmpty()) {
+        searchCity(text.text)
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+            .padding(top = if (isSearchBarFocused) 0.dp else 20.dp)
+            .background(Color.Transparent),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TextField(
+            modifier = Modifier
+                .onFocusChanged {
+                    focusOfSearchBarWasChanged(it.isFocused)
+                }
+                .weight(1f),
+            value = if (isSearchBarFocused) text else initialText,
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Outlined.Search,
+                    contentDescription = null,
+                    tint = colorResource(id = R.color.dark_yellow)
+                )
+            },
+            onValueChange = { newText ->
+                text = newText
+            },
+            placeholder = {
+                Text(
+                    text = "Search your city",
+                    style = TextStyle(
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontFamily = FontFamily(Font(R.font.fabrik)),
+                        letterSpacing = 0.5.sp,
+                    )
+                )
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(25.dp),
+            colors = TextFieldDefaults.textFieldColors(
+                focusedTextColor = Color.White,
+                unfocusedTextColor = Color.White,
+                cursorColor = Color.White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                containerColor = colorResource(id = R.color.dark_blue)
+            )
+        )
+        AnimatedVisibility(visible = isSearchBarFocused) {
+            Text(
+                modifier = Modifier
+                    .clickable {
+                        onCancelClicked()
+                        text = TextFieldValue("")
+                    }
+                    .weight(1f)
+                    .padding(start = 15.dp)
+                    .animateContentSize(),
+                text = "Cancel",
+                style = TextStyle(
+                    color = colorResource(id = R.color.dark_yellow),
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(R.font.fabrik)),
+                )
+            )
+        }
+    }
 }
 
 @Preview

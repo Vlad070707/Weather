@@ -1,8 +1,8 @@
 package com.example.presentation.home
 
 import androidx.lifecycle.viewModelScope
-import com.example.data.weather.model.CurrentWeatherDto
-import com.example.data.weather.model.FutureWeatherDto
+import com.example.domain.weather.model.CurrentWeatherDto
+import com.example.domain.weather.model.FutureWeatherDto
 import com.example.domain.location.usecase.GetSavedLocationUseCase
 import com.example.domain.weather.usecase.LoadCurrentWeatherUseCase
 import com.example.domain.weather.usecase.LoadFutureWeatherUseCase

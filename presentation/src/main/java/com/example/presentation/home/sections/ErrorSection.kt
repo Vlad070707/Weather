@@ -24,53 +24,53 @@ import com.example.presentation.R
 
 @Composable
 fun ErrorSection(
-  onUpdateButtonClicked: () -> Unit
+    onUpdateButtonClicked: () -> Unit
 ) {
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .background(MaterialTheme.colorScheme.background),
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally
-  ) {
-    Image(
-      modifier = Modifier
-        .size(100.dp),
-      alignment = Alignment.Center,
-      painter = painterResource(id = R.drawable.error_icon),
-      contentDescription = null,
-      colorFilter = ColorFilter.tint(color = colorResource(id = R.color.dark_yellow))
-    )
-    Text(
-      modifier = Modifier
-        .padding(vertical = 30.dp),
-      text = stringResource(R.string.error_message),
-      style = TextStyle(
-        color = Color.White,
-        fontWeight = FontWeight.Bold,
-        fontSize = 28.sp,
-        letterSpacing = 1.sp,
-        fontFamily = FontFamily(Font(R.font.fabrik))
-      ),
-      textAlign = TextAlign.Center
-    )
-    Button(
-      onClick = onUpdateButtonClicked,
-      colors = ButtonDefaults.textButtonColors(
-        containerColor = colorResource(id = R.color.dark_yellow)
-      ),
-      shape = RoundedCornerShape(25.dp)
+    Column(
+        modifier = Modifier
+          .fillMaxSize()
+          .background(MaterialTheme.colorScheme.background),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-      Text(
-        text = stringResource(R.string.try_again),
-        style = TextStyle(
-          color = MaterialTheme.colorScheme.background,
-          fontWeight = FontWeight.SemiBold,
-          fontSize = 30.sp,
-          letterSpacing = 1.sp,
-          fontFamily = FontFamily(Font(R.font.fabrik))
+        Image(
+            modifier = Modifier
+                .size(100.dp),
+            alignment = Alignment.Center,
+            painter = painterResource(id = R.drawable.error_icon),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(color = colorResource(id = R.color.dark_yellow))
         )
-      )
+        Text(
+            modifier = Modifier
+                .padding(vertical = 30.dp),
+            text = stringResource(R.string.error_message),
+            style = TextStyle(
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 28.sp,
+                letterSpacing = 1.sp,
+                fontFamily = FontFamily(Font(R.font.fabrik))
+            ),
+            textAlign = TextAlign.Center
+        )
+        Button(
+            onClick = onUpdateButtonClicked,
+            colors = ButtonDefaults.textButtonColors(
+                containerColor = colorResource(id = R.color.dark_yellow)
+            ),
+            shape = RoundedCornerShape(25.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.try_again),
+                style = TextStyle(
+                    color = MaterialTheme.colorScheme.background,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 30.sp,
+                    letterSpacing = 1.sp,
+                    fontFamily = FontFamily(Font(R.font.fabrik))
+                )
+            )
+        }
     }
-  }
 }

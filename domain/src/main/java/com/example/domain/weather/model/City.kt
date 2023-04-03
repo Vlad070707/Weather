@@ -1,23 +1,22 @@
-package com.example.data.weather.model
-
+package com.example.domain.weather.model
 
 import com.google.gson.annotations.SerializedName
 
 data class City(
   @SerializedName("coord")
-  val coord: Coord? = null,
+    val coord: Coord? = null,
   @SerializedName("country")
-  val country: String? = null,
+    val country: String? = null,
   @SerializedName("id")
-  val id: Int? = null,
+    val id: Int? = null,
   @SerializedName("name")
-  val name: String? = null,
+    val name: String? = null,
   @SerializedName("population")
-  val population: Int? = null,
+    val population: Int? = null,
   @SerializedName("sunrise")
-  val sunrise: Int? = null,
+    val sunrise: Int? = null,
   @SerializedName("sunset")
-  val sunset: Int? = null,
+    val sunset: Int? = null,
   @SerializedName("timezone")
-  val timezone: Int? = null
+    val timezone: Int? = null
 )

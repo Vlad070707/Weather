@@ -1,11 +1,7 @@
 package com.example.data.weather
 
-import com.example.data.weather.WeatherConstants.API_KEY
-import com.example.data.weather.WeatherConstants.END_POINTS_CURRENT_WEATHER
-import com.example.data.weather.WeatherConstants.END_POINTS_FUTURE_WEATHER
-import com.example.data.weather.WeatherConstants.UNITS
-import com.example.data.weather.model.CurrentWeatherDto
-import com.example.data.weather.model.FutureWeatherDto
+import com.example.domain.weather.model.CurrentWeatherDto
+import com.example.domain.weather.model.FutureWeatherDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -24,4 +20,11 @@ interface WeatherService {
         @Query("units") units: String = UNITS,
         @Query("appid") appid: String = API_KEY
     ): FutureWeatherDto
+
+    companion object {
+        private const val END_POINTS_CURRENT_WEATHER = "weather?"
+        private const val END_POINTS_FUTURE_WEATHER = "forecast?"
+        private const val API_KEY = "61f71b16627b1aacb1e4b316c0557b79"
+        private const val UNITS = "metric"
+    }
 }

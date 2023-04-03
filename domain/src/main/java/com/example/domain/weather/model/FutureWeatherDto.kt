@@ -1,17 +1,16 @@
-package com.example.data.weather.model
+package com.example.domain.weather.model
 
-import com.example.domain.weather.model.Item
 import com.google.gson.annotations.SerializedName
 
 data class FutureWeatherDto(
     @SerializedName("city")
-  val city: City? = null,
+    val city: City? = null,
     @SerializedName("cnt")
-  val cnt: Int? = null,
+    val cnt: Int? = null,
     @SerializedName("cod")
-  val cod: String? = null,
+    val cod: String? = null,
     @SerializedName("list")
-  val list: List<Item>,
+    val list: List<Item>,
     @SerializedName("message")
-  val message: Int? = null
-) : WeatherDto
+    val message: Int? = null
+)

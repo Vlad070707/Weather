@@ -1,6 +1,6 @@
 package com.example.domain.weather.usecase
 
-import com.example.data.weather.model.CurrentWeatherDto
+import com.example.domain.weather.model.CurrentWeatherDto
 import com.example.domain.util.Resource
 import com.example.domain.weather.WeatherRepository
 import kotlinx.coroutines.Dispatchers

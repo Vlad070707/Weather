@@ -3,18 +3,14 @@ package com.example.presentation.home
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.domain.util.Resource
-import com.example.presentation.R
 import com.example.presentation.base.Loader
 import com.example.presentation.home.sections.CurrentWeatherSection
 import com.example.presentation.home.sections.ErrorSection
@@ -51,8 +47,8 @@ fun HomeScreen(
                 if (isSuccess) {
                     Column(
                         modifier = Modifier
-                          .fillMaxSize()
-                          .background(MaterialTheme.colorScheme.background)
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.background)
                     ) {
                         CurrentWeatherSection(
                             isShowMoreDetailsClicked,
