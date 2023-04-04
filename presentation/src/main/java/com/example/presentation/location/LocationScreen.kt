@@ -8,6 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.presentation.location.sections.CurrentCitySection
 import com.example.presentation.location.sections.HintsSection
@@ -32,7 +33,8 @@ fun LocationScreen(
             .fillMaxSize()
             .clickable {
                 isSearchBarFocused = false
-            },
+            }
+            .padding(bottom = 60.dp),
         color = MaterialTheme.colorScheme.background
     ) {
         Column {

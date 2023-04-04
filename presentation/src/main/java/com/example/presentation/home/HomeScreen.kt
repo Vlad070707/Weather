@@ -3,6 +3,8 @@ package com.example.presentation.home
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -49,6 +51,8 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(MaterialTheme.colorScheme.background)
+                            .verticalScroll(state = rememberScrollState())
+                            .padding(bottom = 60.dp)
                     ) {
                         CurrentWeatherSection(
                             isShowMoreDetailsClicked,

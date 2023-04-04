@@ -43,9 +43,7 @@ fun BottomNavigation(
     val isHomeAvailable = currentCityState.value.isNotEmpty()
 
     val homeScreen = Screen.Home.apply {
-        if (!isHomeAvailable) {
-            isAvailable = false
-        }
+        isAvailable = isHomeAvailable
     }
     val items = listOf(homeScreen, Screen.Location)
 
