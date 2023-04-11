@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.domain.util.Resource
+import com.example.domain.util.RequestState
 import com.example.presentation.base.Loader
 import com.example.presentation.home.sections.CurrentWeatherSection
 import com.example.presentation.home.sections.ErrorSection
@@ -25,8 +25,8 @@ fun HomeScreen(
     val currentWeatherState = viewModel.currentWeatherState.collectAsState()
     val futureWeatherState = viewModel.futureWeatherState.collectAsState()
 
-    val isLoading = currentWeatherState.value is Resource.Loading || futureWeatherState.value is Resource.Loading
-    val isSuccess = currentWeatherState.value is Resource.Success && futureWeatherState.value is Resource.Success
+    val isLoading = currentWeatherState.value is RequestState.Loading || futureWeatherState.value is RequestState.Loading
+    val isSuccess = currentWeatherState.value is RequestState.Success && futureWeatherState.value is RequestState.Success
 
     var isShowMoreDetailsClicked by remember {
         mutableStateOf(false)

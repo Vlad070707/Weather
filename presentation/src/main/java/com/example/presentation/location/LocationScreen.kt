@@ -51,7 +51,7 @@ fun LocationScreen(
                 }
             )
             AnimatedVisibility(visible = !isSearchBarFocused) {
-                CurrentCitySection(city = currentCity.value)
+                CurrentCitySection(city = currentCity.value.data ?: "")
             }
             AnimatedVisibility(visible = isSearchBarFocused) {
                 HintsSection(hintsDto = listOfHintsDtoState.value) {

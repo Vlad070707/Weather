@@ -6,7 +6,7 @@ import com.example.domain.location.usecase.SaveLocationUseCase
 import com.example.domain.search.model.ListOfHintsDto
 import com.example.domain.search.usecase.SearchCityUseCase
 import com.example.presentation.base.BaseViewModel
-import com.example.domain.util.Resource
+import com.example.domain.util.RequestState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
@@ -21,8 +21,8 @@ class LocationViewModel @Inject constructor(
     private val saveLocationUseCase: SaveLocationUseCase
 ) : BaseViewModel(getSavedLocationUseCase) {
 
-    private val _listOfHintsDtoState = MutableStateFlow<Resource<ListOfHintsDto>>(Resource.Error())
-    val listOfHintsDtoState: StateFlow<Resource<ListOfHintsDto>> = _listOfHintsDtoState
+    private val _listOfHintsDtoState = MutableStateFlow<RequestState<ListOfHintsDto>>(RequestState.Error())
+    val listOfHintsDtoState: StateFlow<RequestState<ListOfHintsDto>> = _listOfHintsDtoState
 
     private val _query = MutableSharedFlow<String>()
 
@@ -31,7 +31,7 @@ class LocationViewModel @Inject constructor(
             _query
                 .debounce(500)
                 .collectLatest {
-                    _listOfHintsDtoState.value = Resource.Loading()
+                    _listOfHintsDtoState.value = RequestState.Loading()
                     _listOfHintsDtoState.value = searchCityUseCase(it)
                 }
         }
@@ -50,6 +50,6 @@ class LocationViewModel @Inject constructor(
     }
 
     fun clearListOfHints() {
-        _listOfHintsDtoState.value = Resource.Success(ListOfHintsDto())
+        _listOfHintsDtoState.value = RequestState.Success(ListOfHintsDto())
     }
 }

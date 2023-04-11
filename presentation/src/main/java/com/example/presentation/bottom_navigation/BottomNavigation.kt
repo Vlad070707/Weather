@@ -40,7 +40,7 @@ fun BottomNavigation(
         else -> null
     }
 
-    val isHomeAvailable = currentCityState.value.isNotEmpty()
+    val isHomeAvailable = currentCityState.value.data?.isNotEmpty() == true
 
     val homeScreen = Screen.Home.apply {
         isAvailable = isHomeAvailable

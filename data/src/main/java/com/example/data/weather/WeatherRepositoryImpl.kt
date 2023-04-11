@@ -2,26 +2,26 @@ package com.example.data.weather
 
 import com.example.domain.weather.model.CurrentWeatherDto
 import com.example.domain.weather.model.FutureWeatherDto
-import com.example.domain.util.Resource
+import com.example.domain.util.RequestState
 import com.example.domain.weather.WeatherRepository
 
 class WeatherRepositoryImpl(private val service: WeatherService) : WeatherRepository {
 
-    override suspend fun getCurrentWeather(city: String): Resource<CurrentWeatherDto> {
+    override suspend fun getCurrentWeather(city: String): RequestState<CurrentWeatherDto> {
         val response = try {
             service.getCurrentWeather(city)
         } catch (e: Exception) {
-            return Resource.Error(e.localizedMessage)
+            return RequestState.Error(e.localizedMessage)
         }
-        return Resource.Success(response)
+        return RequestState.Success(response)
     }
 
-    override suspend fun getFutureWeather(city: String): Resource<FutureWeatherDto> {
+    override suspend fun getFutureWeather(city: String): RequestState<FutureWeatherDto> {
         val response = try {
             service.getFutureWeather(city)
         } catch (e: Exception) {
-            return Resource.Error(e.localizedMessage)
+            return RequestState.Error(e.localizedMessage)
         }
-        return Resource.Success(response)
+        return RequestState.Success(response)
     }
 }

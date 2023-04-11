@@ -18,14 +18,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.domain.search.model.ListOfHintsDto
-import com.example.domain.util.Resource
+import com.example.domain.util.RequestState
 import com.example.presentation.R
 import com.example.presentation.base.Loader
 import java.util.*
 
 @Composable
 fun HintsSection(
-    hintsDto: Resource<ListOfHintsDto>,
+    hintsDto: RequestState<ListOfHintsDto>,
     onHintClicked: (String) -> Unit
 ) {
     Box(
@@ -34,7 +34,7 @@ fun HintsSection(
         contentAlignment = Alignment.TopCenter
     ) {
         when (hintsDto) {
-            is Resource.Loading -> {
+            is RequestState.Loading -> {
                 Loader(
                     modifier = Modifier
                         .size(100.dp)
@@ -128,5 +128,5 @@ fun countryCodeToEmojiFlag(countryCode: String): String {
 @Preview
 @Composable
 private fun HintsSectionPreview() {
-    HintsSection(hintsDto = Resource.Loading(), onHintClicked = {})
+    HintsSection(hintsDto = RequestState.Loading(), onHintClicked = {})
 }

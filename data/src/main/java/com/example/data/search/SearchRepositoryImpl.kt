@@ -2,16 +2,16 @@ package com.example.data.search
 
 import com.example.domain.search.SearchRepository
 import com.example.domain.search.model.ListOfHintsDto
-import com.example.domain.util.Resource
+import com.example.domain.util.RequestState
 
 class SearchRepositoryImpl(private val service: SearchCityService) : SearchRepository {
 
-    override suspend fun searchCity(query: String): Resource<ListOfHintsDto> {
+    override suspend fun searchCity(query: String): RequestState<ListOfHintsDto> {
         val response = try {
             service.searchCity(query)
         } catch (e: Exception) {
-            return Resource.Error(e.localizedMessage)
+            return RequestState.Error(e.localizedMessage)
         }
-        return Resource.Success(response)
+        return RequestState.Success(response)
     }
 }
