@@ -6,7 +6,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.presentation.base.Screen
+import com.example.presentation.base.AppDestinations
 import com.example.presentation.bottom_navigation.BottomNavigation
 import com.example.presentation.theme.WeatherTheme
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -18,7 +18,7 @@ fun WeatherApp() {
     WeatherTheme {
         val navController = rememberAnimatedNavController()
         val showNavigationBar = navController.currentBackStackEntryAsState().value?.destination?.route?.let { route ->
-            route != (Screen.Splash.route)
+            route != (AppDestinations.Splash.route)
         } ?: false
 
         Surface {

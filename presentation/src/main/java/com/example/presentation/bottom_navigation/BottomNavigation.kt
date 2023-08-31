@@ -25,7 +25,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.presentation.R
-import com.example.presentation.base.Screen
+import com.example.presentation.base.AppDestinations
 
 @Composable
 fun BottomNavigation(
@@ -35,17 +35,17 @@ fun BottomNavigation(
     val currentCityState = viewModel.currentCityState.collectAsState()
 
     var currentScreen = when (navController.currentBackStackEntryAsState().value?.destination?.route) {
-        Screen.Location.route -> Screen.Location
-        Screen.Home.route -> Screen.Home
+        AppDestinations.Location.route -> AppDestinations.Location
+        AppDestinations.Home.route -> AppDestinations.Home
         else -> null
     }
 
     val isHomeAvailable = currentCityState.value.data?.isNotEmpty() == true
 
-    val homeScreen = Screen.Home.apply {
+    val homeScreen = AppDestinations.Home.apply {
         isAvailable = isHomeAvailable
     }
-    val items = listOf(homeScreen, Screen.Location)
+    val items = listOf(homeScreen, AppDestinations.Location)
 
     currentScreen?.let { screen ->
         Row(
@@ -67,7 +67,7 @@ fun BottomNavigation(
 }
 
 @Composable
-fun BottomNavigationItem(item: Screen, isSelected: Boolean, isEnabled: Boolean = true, onClick: () -> Unit) {
+fun BottomNavigationItem(item: AppDestinations, isSelected: Boolean, isEnabled: Boolean = true, onClick: () -> Unit) {
     val background = if (isSelected) colorResource(id = R.color.dark_yellow) else Color.Transparent
     val contentColor = when {
         isSelected -> MaterialTheme.colorScheme.background

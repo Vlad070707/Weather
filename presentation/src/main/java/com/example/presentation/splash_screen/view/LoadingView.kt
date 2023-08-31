@@ -1,4 +1,4 @@
-package com.example.presentation.splash_screen.sections
+package com.example.presentation.splash_screen.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -13,9 +13,11 @@ import com.example.presentation.base.Loader
 import com.example.presentation.home.sections.TitleSection
 
 @Composable
-fun LoadingSection() {
+fun LoadingView(
+    modifier: Modifier = Modifier
+) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
