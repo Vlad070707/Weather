@@ -1,7 +1,7 @@
 package com.example.weather.di
 
-import com.example.data.search.SearchCityService
-import com.example.data.weather.WeatherService
+import com.example.data.service.SearchCityService
+import com.example.data.service.WeatherService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

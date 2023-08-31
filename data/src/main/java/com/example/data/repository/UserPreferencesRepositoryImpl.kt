@@ -1,4 +1,4 @@
-package com.example.data.location
+package com.example.data.repository
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

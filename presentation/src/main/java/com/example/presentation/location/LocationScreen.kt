@@ -1,63 +1,66 @@
 package com.example.presentation.location
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.presentation.location.sections.CurrentCitySection
-import com.example.presentation.location.sections.HintsSection
-import com.example.presentation.location.sections.SearchSection
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.presentation.R
+import com.example.presentation.location.view.CurrentCityView
+import com.example.presentation.location.view.HintsView
+import com.example.presentation.location.view.SearchView
 
 @Composable
 fun LocationScreen(
+    modifier: Modifier = Modifier,
     viewModel: LocationViewModel = hiltViewModel()
 ) {
-    val listOfHintsDtoState = viewModel.listOfHintsDtoState.collectAsState()
-    val currentCity = viewModel.currentCityState.collectAsState()
-    var isSearchBarFocused by remember {
-        mutableStateOf(false)
-    }
 
-    if (!isSearchBarFocused) {
-        viewModel.clearListOfHints()
-    }
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
-    Surface(
-        modifier = Modifier
+    Scaffold(
+        modifier = modifier
+            .padding(bottom = 60.dp)
+    ) { contentPadding ->
+        Box(modifier = Modifier
+            .padding(contentPadding)
             .fillMaxSize()
             .clickable {
-                isSearchBarFocused = false
+                viewModel.clearFocusOnSearchBar()
             }
-            .padding(bottom = 60.dp),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Column {
-            SearchSection(
-                isSearchBarFocused = isSearchBarFocused,
-                onCancelClicked = {
-                    isSearchBarFocused = false
-                },
-                focusOfSearchBarWasChanged = {
-                    isSearchBarFocused = it
-                },
-                searchCity = {
-                    viewModel.searchCity(it)
+            .background(color = colorResource(id = R.color.light_blue))) {
+            Column {
+                SearchView(
+                    isSearchBarFocused = uiState.value.isSearchBarFocused,
+                    searchBarText = uiState.value.query,
+                    onCancelClicked = {
+                        viewModel.clearFocusOnSearchBar()
+                    },
+                    focusOfSearchBarWasChanged = {
+                        viewModel.updateSearchBarFocusStatus(it)
+                    },
+                    onSearchValueChange = {
+                        viewModel.searchCity(it)
+                    }
+                )
+                AnimatedVisibility(visible = !uiState.value.isSearchBarFocused) {
+                    CurrentCityView(city = uiState.value.currentCity)
                 }
-            )
-            AnimatedVisibility(visible = !isSearchBarFocused) {
-                CurrentCitySection(city = currentCity.value.data ?: "")
-            }
-            AnimatedVisibility(visible = isSearchBarFocused) {
-                HintsSection(hintsDto = listOfHintsDtoState.value) {
-                    viewModel.saveCurrentCity(it)
-                    viewModel.updateCurrentCityState()
-                    isSearchBarFocused = !isSearchBarFocused
+                AnimatedVisibility(visible = uiState.value.isSearchBarFocused) {
+                    HintsView(
+                        hintsList = uiState.value.hintsList,
+                        isLoading = uiState.value.isLoading,
+                        onHintClicked = {
+                            viewModel.updateCurrentCity(it)
+                        }
+                    )
                 }
             }
         }

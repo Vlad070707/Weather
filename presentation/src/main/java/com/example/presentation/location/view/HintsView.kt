@@ -1,9 +1,8 @@
-package com.example.presentation.location.sections
+package com.example.presentation.location.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.*
@@ -17,47 +16,46 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.domain.search.model.ListOfHintsDto
-import com.example.domain.util.RequestState
+import com.example.domain.search.model.HintsList
 import com.example.presentation.R
 import com.example.presentation.base.Loader
-import java.util.*
+import java.util.Locale
+import androidx.compose.foundation.lazy.items
 
 @Composable
-fun HintsSection(
-    hintsDto: RequestState<ListOfHintsDto>,
+fun HintsView(
+    modifier: Modifier = Modifier,
+    hintsList: HintsList,
+    isLoading: Boolean = false,
     onHintClicked: (String) -> Unit
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
         contentAlignment = Alignment.TopCenter
     ) {
-        when (hintsDto) {
-            is RequestState.Loading -> {
-                Loader(
-                    modifier = Modifier
-                        .size(100.dp)
-                )
+        if (isLoading) {
+            Loader(
+                modifier = Modifier
+                    .size(100.dp)
+            )
+        } else {
+            val listOgHints = hintsList.geonames?.distinctBy {
+                it?.name
             }
-            else -> {
-                val listOgHints = hintsDto.data?.geonames?.distinctBy {
-                    it?.name
-                }
-                listOgHints?.let { geonamesList ->
-                    LazyColumn(
-                        contentPadding = PaddingValues(20.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        items(geonamesList) { geoname ->
-                            geoname?.name?.let { name ->
-                                val countryCode = geoname.countryCode
-                                HintItem(
-                                    name = name,
-                                    countryCode = countryCode,
-                                    onHintClicked = onHintClicked
-                                )
-                            }
+            listOgHints?.let { geonamesList ->
+                LazyColumn(
+                    contentPadding = PaddingValues(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(geonamesList) { geoname ->
+                        geoname?.name?.let { name ->
+                            val countryCode = geoname.countryCode
+                            HintItem(
+                                name = name,
+                                countryCode = countryCode,
+                                onHintClicked = onHintClicked
+                            )
                         }
                     }
                 }
@@ -128,5 +126,5 @@ fun countryCodeToEmojiFlag(countryCode: String): String {
 @Preview
 @Composable
 private fun HintsSectionPreview() {
-    HintsSection(hintsDto = RequestState.Loading(), onHintClicked = {})
+    HintsView(hintsList = HintsList(), onHintClicked = {})
 }

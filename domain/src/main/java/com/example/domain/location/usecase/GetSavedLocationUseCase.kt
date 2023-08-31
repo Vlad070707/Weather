@@ -1,9 +1,8 @@
 package com.example.domain.location.usecase
 
-import com.example.domain.location.UserPreferencesRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetSavedLocationUseCase(private val repository: UserPreferencesRepository) {
+interface GetSavedLocationUseCase {
 
-    operator fun invoke(): Flow<String> = repository.getCity
+    operator fun invoke(): Flow<String>
 }

@@ -2,7 +2,7 @@ package com.example.domain.search.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ListOfHintsDto(
+data class HintsList(
     @SerializedName("geonames")
     val geonames: List<Geoname?>? = null,
     @SerializedName("totalResultsCount")

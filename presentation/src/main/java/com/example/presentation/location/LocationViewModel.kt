@@ -1,55 +1,126 @@
 package com.example.presentation.location
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.location.usecase.GetSavedLocationUseCase
 import com.example.domain.location.usecase.SaveLocationUseCase
-import com.example.domain.search.model.ListOfHintsDto
+import com.example.domain.search.model.HintsList
 import com.example.domain.search.usecase.SearchCityUseCase
-import com.example.presentation.base.BaseViewModel
-import com.example.domain.util.RequestState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
-@OptIn(FlowPreview::class)
 @HiltViewModel
 class LocationViewModel @Inject constructor(
     private val searchCityUseCase: SearchCityUseCase,
-    getSavedLocationUseCase: GetSavedLocationUseCase,
+    private val getSavedLocationUseCase: GetSavedLocationUseCase,
     private val saveLocationUseCase: SaveLocationUseCase
-) : BaseViewModel(getSavedLocationUseCase) {
+) : ViewModel() {
 
-    private val _listOfHintsDtoState = MutableStateFlow<RequestState<ListOfHintsDto>>(RequestState.Error())
-    val listOfHintsDtoState: StateFlow<RequestState<ListOfHintsDto>> = _listOfHintsDtoState
+    private val _uiState: MutableStateFlow<LocationUiState> = MutableStateFlow(LocationUiState())
+    val uiState: StateFlow<LocationUiState> = _uiState.asStateFlow()
 
-    private val _query = MutableSharedFlow<String>()
+    private var debounceJob: Job? = null
 
     init {
         viewModelScope.launch {
-            _query
-                .debounce(500)
-                .collectLatest {
-                    _listOfHintsDtoState.value = RequestState.Loading()
-                    _listOfHintsDtoState.value = searchCityUseCase(it)
+            getSavedLocationUseCase().collect { city ->
+                _uiState.update {
+                    LocationUiState(
+                        currentCity = city
+                    )
                 }
+            }
         }
     }
 
     fun searchCity(query: String) {
+        if (_uiState.value.isLoading) return
+        _uiState.update {
+            it.copy(
+                query = query
+            )
+        }
         viewModelScope.launch {
-            _query.emit(query)
+            debounceJob?.cancel()
+            debounceJob = CoroutineScope(Dispatchers.IO).launch {
+                delay(600)
+                _uiState.update {
+                    it.copy(
+                        isLoading = true
+                    )
+                }
+                searchCityUseCase(query)
+                    .fold(
+                        onSuccess = { hintsList ->
+                            _uiState.update {
+                                it.copy(
+                                    hintsList = hintsList,
+                                    isLoading = false
+                                )
+                            }
+                        },
+                        onFailure = { throwable ->
+                            Timber.e(throwable)
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false
+                                )
+                            }
+                        }
+                    )
+            }
+
         }
     }
 
-    fun saveCurrentCity(city: String) {
+    fun updateSearchBarFocusStatus(isFocused: Boolean) {
+        _uiState.update {
+            it.copy(
+                isSearchBarFocused = isFocused
+            )
+        }
+    }
+
+    fun clearFocusOnSearchBar() {
+        _uiState.update {
+            it.copy(
+                isSearchBarFocused = false,
+                hintsList = HintsList(),
+                query = ""
+            )
+        }
+    }
+
+    fun updateCurrentCity(city: String) {
         viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
             saveLocationUseCase(city)
+            _uiState.update {
+                LocationUiState(
+                    currentCity = city
+                )
+            }
+            clearFocusOnSearchBar()
         }
-    }
-
-    fun clearListOfHints() {
-        _listOfHintsDtoState.value = RequestState.Success(ListOfHintsDto())
     }
 }
+
+data class LocationUiState(
+    val hintsList: HintsList = HintsList(),
+    val query: String = "",
+    val errorMessage: String? = null,
+    val isLoading: Boolean = false,
+    val isSearchBarFocused: Boolean = false,
+    val currentCity: String = ""
+)

@@ -7,4 +7,7 @@
   <string name="title">Weather assist</string>
   <string name="error_message">Oops… Looks like something went wrong. Please, check your network connection and try again.</string>
   <string name="try_again">Try again</string>
+  <string name="no_saved_city">There is no saved city. Click on \"Search your city\" above and please select the city in which you would like to track the weather</string>
+  <string name="your_saved_city_is">Your saved city is\n</string>
+  <string name="search_your_city">Search your city</string>
 </resources>

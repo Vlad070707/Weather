@@ -1,4 +1,4 @@
-package com.example.data.location.di
+package com.example.data.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -8,7 +8,9 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.example.data.location.UserPreferencesRepositoryImpl
+import com.example.data.repository.UserPreferencesRepositoryImpl
+import com.example.data.usecase.GetSavedLocationUseCaseImpl
+import com.example.data.usecase.SaveLocationUseCaseImpl
 import com.example.domain.location.UserPreferencesRepository
 import com.example.domain.location.usecase.GetSavedLocationUseCase
 import com.example.domain.location.usecase.SaveLocationUseCase
@@ -52,10 +54,10 @@ object DataStoreModule {
     @Provides
     fun provideGetSavedLocationUseCase(
         repository: UserPreferencesRepository
-    ) = GetSavedLocationUseCase(repository)
+    ): GetSavedLocationUseCase = GetSavedLocationUseCaseImpl(repository)
 
     @Provides
     fun provideSaveLocationUseCase(
         repository: UserPreferencesRepository
-    ) = SaveLocationUseCase(repository)
+    ): SaveLocationUseCase = SaveLocationUseCaseImpl(repository)
 }

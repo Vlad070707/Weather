@@ -1,4 +1,4 @@
-package com.example.presentation.location.sections
+package com.example.presentation.location.view
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -19,10 +19,10 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,11 +30,12 @@ import com.example.presentation.R
 import com.example.presentation.home.sections.TitleSection
 
 @Composable
-fun SearchSection(
+fun SearchView(
     isSearchBarFocused: Boolean,
+    searchBarText: String,
     onCancelClicked: () -> Unit,
     focusOfSearchBarWasChanged: (Boolean) -> Unit,
-    searchCity: (String) -> Unit
+    onSearchValueChange: (String) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -53,10 +54,11 @@ fun SearchSection(
             )
         }
         SearchBarView(
-            isSearchBarFocused,
+            isSearchBarFocused = isSearchBarFocused,
+            searchBarText = searchBarText,
             focusOfSearchBarWasChanged = focusOfSearchBarWasChanged,
             onCancelClicked = onCancelClicked,
-            searchCity = searchCity
+            onSearchValueChange = onSearchValueChange
         )
     }
 }
@@ -65,20 +67,11 @@ fun SearchSection(
 @Composable
 private fun SearchBarView(
     isSearchBarFocused: Boolean,
+    searchBarText: String,
     focusOfSearchBarWasChanged: (Boolean) -> Unit,
     onCancelClicked: () -> Unit,
-    searchCity: (String) -> Unit
+    onSearchValueChange: (String) -> Unit
 ) {
-    val initialText = TextFieldValue("")
-    var text by remember {
-        mutableStateOf(initialText)
-    }
-    if (!isSearchBarFocused) {
-        text = initialText
-    }
-    if (text.text.isNotEmpty()) {
-        searchCity(text.text)
-    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -93,7 +86,7 @@ private fun SearchBarView(
                     focusOfSearchBarWasChanged(it.isFocused)
                 }
                 .weight(1f),
-            value = if (isSearchBarFocused) text else initialText,
+            value = searchBarText,
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.Search,
@@ -101,12 +94,10 @@ private fun SearchBarView(
                     tint = colorResource(id = R.color.dark_yellow)
                 )
             },
-            onValueChange = { newText ->
-                text = newText
-            },
+            onValueChange = onSearchValueChange,
             placeholder = {
                 Text(
-                    text = "Search your city",
+                    text = stringResource(R.string.search_your_city),
                     style = TextStyle(
                         color = Color.White,
                         fontSize = 18.sp,
@@ -131,7 +122,6 @@ private fun SearchBarView(
                 modifier = Modifier
                     .clickable {
                         onCancelClicked()
-                        text = TextFieldValue("")
                     }
                     .weight(1f)
                     .padding(start = 15.dp)
@@ -149,6 +139,6 @@ private fun SearchBarView(
 
 @Preview
 @Composable
-fun PreviewSearchSection() {
-//  SearchSection()
+fun PreviewSearchView() {
+//    SearchView()
 }

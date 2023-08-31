@@ -1,5 +1,6 @@
-package com.example.data.weather
+package com.example.data.repository
 
+import com.example.data.service.WeatherService
 import com.example.domain.weather.model.CurrentWeatherDto
 import com.example.domain.weather.model.FutureWeatherDto
 import com.example.domain.util.RequestState

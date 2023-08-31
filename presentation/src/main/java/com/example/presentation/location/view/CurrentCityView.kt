@@ -1,12 +1,13 @@
-package com.example.presentation.location.sections
+package com.example.presentation.location.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -28,13 +30,18 @@ import androidx.compose.ui.unit.sp
 import com.example.presentation.R
 
 @Composable
-fun CurrentCitySection(city: String) {
-    Surface(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(20.dp),
+fun CurrentCityView(
+    modifier: Modifier = Modifier,
+    city: String
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(20.dp),
         shape = RoundedCornerShape(25.dp),
-        color = colorResource(id = R.color.dark_blue)
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.dark_blue)
+        )
     ) {
         if (city.isEmpty()) {
             NoSavedLocationView()
@@ -49,11 +56,11 @@ fun CurrentCitySection(city: String) {
 private fun NoSavedLocationView() {
     Column(
         modifier = Modifier
-          .fillMaxWidth()
-          .padding(
-            horizontal = 15.dp,
-            vertical = 25.dp
-          ),
+            .fillMaxWidth()
+            .padding(
+                horizontal = 15.dp,
+                vertical = 25.dp
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
@@ -69,7 +76,7 @@ private fun NoSavedLocationView() {
                 .padding(
                     top = 25.dp
                 ),
-            text = "There is no saved city. Click on \"Search your city\" above and please select the city in which you would like to track the weather",
+            text = stringResource(R.string.no_saved_city),
             style = TextStyle(
                 color = Color.White,
                 fontSize = 24.sp,
@@ -85,11 +92,11 @@ private fun NoSavedLocationView() {
 fun LocationView(city: String) {
     Row(
         modifier = Modifier
-          .fillMaxWidth()
-          .padding(
-            horizontal = 15.dp,
-            vertical = 25.dp
-          ),
+            .fillMaxWidth()
+            .padding(
+                horizontal = 15.dp,
+                vertical = 25.dp
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -101,13 +108,13 @@ fun LocationView(city: String) {
         )
         Text(
             modifier = Modifier
-              .padding(
-                horizontal = 10.dp,
-                vertical = 25.dp
-              )
-              .fillMaxWidth(),
+                .padding(
+                    horizontal = 10.dp,
+                    vertical = 25.dp
+                )
+                .fillMaxWidth(),
             text = buildAnnotatedString {
-                append("Your saved city is\n")
+                append(stringResource(R.string.your_saved_city_is))
                 withStyle(
                     style = SpanStyle(
                         fontSize = 36.sp,
@@ -130,8 +137,8 @@ fun LocationView(city: String) {
 
 @Preview
 @Composable
-fun PreviewCurrentCitySection() {
-    CurrentCitySection(city = "")
+fun PreviewCurrentCityView() {
+    CurrentCityView(city = "")
 }
 
 @Preview
