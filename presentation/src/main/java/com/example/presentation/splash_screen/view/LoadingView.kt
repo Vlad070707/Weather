@@ -10,7 +10,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.presentation.R
 import com.example.presentation.base.Loader
-import com.example.presentation.home.sections.TitleSection
+import com.example.presentation.home.view.TitleView
 
 @Composable
 fun LoadingView(
@@ -29,7 +29,7 @@ fun LoadingView(
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
-        TitleSection(
+        TitleView(
             modifier = Modifier
                 .padding(top = 100.dp)
         )

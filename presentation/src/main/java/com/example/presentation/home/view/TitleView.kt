@@ -1,4 +1,4 @@
-package com.example.presentation.home.sections
+package com.example.presentation.home.view
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.example.presentation.R
 
 @Composable
-fun TitleSection(
+fun TitleView(
     modifier: Modifier
 ) {
     Box(
@@ -43,5 +43,5 @@ fun TitleSection(
 @Preview
 @Composable
 fun PreviewTitleSection() {
-    TitleSection(Modifier)
+    TitleView(Modifier)
 }

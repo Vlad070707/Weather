@@ -57,6 +57,9 @@ fun LocationScreen(
                     HintsView(
                         hintsList = uiState.value.hintsList,
                         isLoading = uiState.value.isLoading,
+                        countryCodeToEmojiFlag = {
+                            viewModel.countryCodeToEmojiFlag(it)
+                        },
                         onHintClicked = {
                             viewModel.updateCurrentCity(it)
                         }

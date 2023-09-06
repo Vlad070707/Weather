@@ -4,6 +4,8 @@ import com.example.data.repository.SearchRepositoryImpl
 import com.example.data.repository.WeatherRepositoryImpl
 import com.example.data.service.SearchCityService
 import com.example.data.service.WeatherService
+import com.example.data.usecase.LoadCurrentWeatherUseCaseImpl
+import com.example.data.usecase.LoadFutureWeatherUseCaseImpl
 import com.example.data.usecase.SearchCityUseCaseImpl
 import com.example.domain.search.SearchRepository
 import com.example.domain.search.usecase.SearchCityUseCase
@@ -30,12 +32,12 @@ object WeatherModule {
     @Provides
     fun provideLoadCurrentWeatherUseCase(
         repository: WeatherRepository
-    ) = LoadCurrentWeatherUseCase(repository)
+    ):LoadCurrentWeatherUseCase = LoadCurrentWeatherUseCaseImpl(repository)
 
     @Provides
     fun provideLoadFutureWeatherUseCase(
         repository: WeatherRepository
-    ) = LoadFutureWeatherUseCase(repository)
+    ):LoadFutureWeatherUseCase = LoadFutureWeatherUseCaseImpl(repository)
 
     @Provides
     fun provideSearchCityUseCase(

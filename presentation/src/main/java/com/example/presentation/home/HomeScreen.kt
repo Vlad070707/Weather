@@ -6,47 +6,52 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.domain.util.RequestState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.presentation.base.Loader
-import com.example.presentation.home.sections.CurrentWeatherSection
-import com.example.presentation.home.sections.ErrorSection
-import com.example.presentation.home.sections.WeatherForNextDaysSection
+import com.example.presentation.home.view.CurrentWeatherView
+import com.example.presentation.home.view.ErrorView
+import com.example.presentation.home.view.WeatherForNextDaysView
 
 @Composable
 fun HomeScreen(
+    modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val currentWeatherState = viewModel.currentWeatherState.collectAsState()
-    val futureWeatherState = viewModel.futureWeatherState.collectAsState()
 
-    val isLoading = currentWeatherState.value is RequestState.Loading || futureWeatherState.value is RequestState.Loading
-    val isSuccess = currentWeatherState.value is RequestState.Success && futureWeatherState.value is RequestState.Success
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
-    var isShowMoreDetailsClicked by remember {
-        mutableStateOf(false)
-    }
+    Scaffold(
+        modifier = modifier
+    ) { contentPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(contentPadding),
+            contentAlignment = Alignment.Center
+        ) {
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
+            when {
+                uiState.value.isLoading -> {
+                    Loader(
+                        modifier = Modifier
+                            .size(150.dp)
+                    )
+                }
 
-        when (isLoading) {
-            true -> {
-                Loader(
-                    modifier = Modifier
-                        .size(150.dp)
-                )
-            }
-            false -> {
-                if (isSuccess) {
+                uiState.value.isError -> {
+                    ErrorView {
+                        viewModel.updateWeatherData()
+                    }
+                }
+
+                else -> {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -54,25 +59,22 @@ fun HomeScreen(
                             .verticalScroll(state = rememberScrollState())
                             .padding(bottom = 60.dp)
                     ) {
-                        CurrentWeatherSection(
-                            isShowMoreDetailsClicked,
-                            currentWeatherState.value.data!!
-                        ) {
-                            isShowMoreDetailsClicked = it
-                        }
+                        CurrentWeatherView(
+                            viewState = uiState.value.currentWeather,
+                            onShowMoreDetailsClicked = viewModel::onShowMoreDetailsClicked
+                        )
                         AnimatedVisibility(
-                            visible = !isShowMoreDetailsClicked,
+                            visible = uiState.value.currentWeather.showMoreDetails.not(),
                             enter = fadeIn(),
                             exit = fadeOut()
                         ) {
-                            WeatherForNextDaysSection(
-                                futureWeatherState.value.data!!
+                            WeatherForNextDaysView(
+                                viewState = uiState.value.futureWeather,
+                                onTodayClicked = { viewModel.onDayOptionClicked(isTodayChecked = true) },
+                                onTomorrowClicked = { viewModel.onDayOptionClicked(isTomorrowChecked = true) },
+                                onNextFiveDaysClicked = { viewModel.onDayOptionClicked(isNextFiveDaysChecked = true) }
                             )
                         }
-                    }
-                } else {
-                    ErrorSection {
-                        viewModel.updateWeatherData()
                     }
                 }
             }

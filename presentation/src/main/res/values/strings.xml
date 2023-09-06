@@ -10,4 +10,11 @@
   <string name="no_saved_city">There is no saved city. Click on \"Search your city\" above and please select the city in which you would like to track the weather</string>
   <string name="your_saved_city_is">Your saved city is\n</string>
   <string name="search_your_city">Search your city</string>
+    <string name="feels_like">"Feels like: "</string>
+  <string name="atmospheric_pressure">"Atmospheric pressure: "</string>
+  <string name="hpa">%1$s hPa</string>
+  <string name="humidity">"Humidity: "</string>
+  <string name="wind_speed">"Wind speed: "</string>
+  <string name="cloudiness">"Cloudiness: "</string>
+  <string name="meter_sec">%1$s meter/sec</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.presentation.home.sections
+package com.example.presentation.home.view
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +32,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.domain.weather.model.FutureWeatherDto
+import com.example.domain.weather.model.FutureWeather
 import com.example.domain.weather.model.Main
 import com.example.domain.weather.model.Item
 import com.example.presentation.R
@@ -42,70 +43,56 @@ import kotlin.math.roundToInt
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun WeatherForNextDaysSection(
-    futureWeatherDto: FutureWeatherDto
+fun WeatherForNextDaysView(
+    modifier: Modifier = Modifier,
+    viewState: WeatherForNextDaysViewState,
+    onTodayClicked: () -> Unit,
+    onTomorrowClicked: () -> Unit,
+    onNextFiveDaysClicked: () -> Unit,
 ) {
-    var isTodayChecked by remember { mutableStateOf(true) }
-    var isTomorrowChecked by remember { mutableStateOf(false) }
-    var isNextFiveDaysChecked by remember { mutableStateOf(false) }
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         DaysOfWeatherView(
-            isTodayChecked = isTodayChecked,
-            todayWasChecked = {
-                isTodayChecked = true
-                isTomorrowChecked = false
-                isNextFiveDaysChecked = false
-            },
-            isTomorrowChecked = isTomorrowChecked,
-            tomorrowWasChecked = {
-                isTodayChecked = false
-                isTomorrowChecked = true
-                isNextFiveDaysChecked = false
-            },
-            isNextFiveDaysChecked = isNextFiveDaysChecked,
-            nextFiveDaysWasChecked = {
-                isTodayChecked = false
-                isTomorrowChecked = false
-                isNextFiveDaysChecked = true
-            }
+            viewState = viewState.daysOfWeatherViewState,
+            todayWasChecked = onTodayClicked,
+            tomorrowWasChecked = onTomorrowClicked,
+            nextFiveDaysWasChecked = onNextFiveDaysClicked
         )
-        val list = when {
-            isTodayChecked -> Utils.mapWeather(futureWeatherDto = futureWeatherDto, isTodayWeather = true)
-            isTomorrowChecked -> Utils.mapWeather(futureWeatherDto = futureWeatherDto, isTodayWeather = false)
-            isNextFiveDaysChecked -> futureWeatherDto.list
-            else -> futureWeatherDto.list
-        }
-        AnimatedContent(targetState = list) {
-            ListOfWeatherView(it, !isTodayChecked && !isTomorrowChecked)
+        AnimatedContent(targetState = viewState.getWeatherList(), label = "") {
+            ListOfWeatherView(it, viewState.daysOfWeatherViewState.isNextFiveDaysChecked)
         }
     }
 }
 
 @Composable
 private fun DaysOfWeatherView(
-    isTodayChecked: Boolean,
+    modifier: Modifier = Modifier,
+    viewState: DaysOfWeatherViewState,
     todayWasChecked: () -> Unit,
-    isTomorrowChecked: Boolean,
     tomorrowWasChecked: () -> Unit,
-    isNextFiveDaysChecked: Boolean,
     nextFiveDaysWasChecked: () -> Unit
 ) {
     Row(
-        modifier = Modifier.padding(start = 20.dp)
+        modifier = modifier
+            .padding(start = 20.dp)
     ) {
 
-        Text(
-            modifier = Modifier.clickable {
+        TextButton(
+            onClick = {
                 todayWasChecked()
-            },
-            text = stringResource(R.string.today),
-            style = TextStyle(
-                color = if (isTodayChecked) colorResource(id = R.color.dark_yellow) else Color.White,
-                fontFamily = FontFamily(Font(R.font.fabrik)),
-                letterSpacing = 0.5.sp,
-                fontSize = 24.sp
+            }
+        ) {
+            Text(
+                text = stringResource(R.string.today),
+                style = TextStyle(
+                    color = if (viewState.isTodayChecked) colorResource(id = R.color.dark_yellow) else Color.White,
+                    fontFamily = FontFamily(Font(R.font.fabrik)),
+                    letterSpacing = 0.5.sp,
+                    fontSize = 24.sp
+                )
             )
-        )
+        }
         Text(
             modifier = Modifier
                 .clickable {
@@ -114,7 +101,7 @@ private fun DaysOfWeatherView(
                 .padding(horizontal = 25.dp),
             text = stringResource(R.string.tomorrow),
             style = TextStyle(
-                color = if (isTomorrowChecked) colorResource(id = R.color.dark_yellow) else Color.White,
+                color = if (viewState.isTomorrowChecked) colorResource(id = R.color.dark_yellow) else Color.White,
                 fontFamily = FontFamily(Font(R.font.fabrik)),
                 letterSpacing = 0.5.sp,
                 fontSize = 24.sp
@@ -126,7 +113,7 @@ private fun DaysOfWeatherView(
             },
             text = stringResource(R.string.next_week),
             style = TextStyle(
-                color = if (isNextFiveDaysChecked) colorResource(id = R.color.dark_yellow) else Color.White,
+                color = if (viewState.isNextFiveDaysChecked) colorResource(id = R.color.dark_yellow) else Color.White,
                 fontFamily = FontFamily(Font(R.font.fabrik)),
                 letterSpacing = 0.5.sp,
                 fontSize = 24.sp
@@ -141,10 +128,11 @@ private fun SmallWeatherItem(item: Item?, showDate: Boolean) {
     var formattedDate = dateAndTime.first
     val formattedTime = dateAndTime.second
     when (formattedDate) {
-        Utils.getDateFor(pattern = "EE, dd MMM") -> {
+        Utils.getDate(pattern = "EE, dd MMM") -> {
             formattedDate = stringResource(id = R.string.today)
         }
-        Utils.getDateFor(forTomorrow = true, pattern = "EE, dd MMM") -> {
+
+        Utils.getDate(forTomorrow = true, pattern = "EE, dd MMM") -> {
             formattedDate = stringResource(id = R.string.tomorrow)
         }
     }
@@ -235,12 +223,12 @@ private fun SmallWeatherItem(item: Item?, showDate: Boolean) {
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-private fun ListOfWeatherView(futureWeatherDto: List<Item?>, showDate: Boolean) {
+private fun ListOfWeatherView(futureWeather: List<Item?>, showDate: Boolean) {
     LazyRow(
         contentPadding = PaddingValues(20.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(futureWeatherDto) {
+        items(futureWeather) {
             SmallWeatherItem(it, showDate)
         }
     }
@@ -260,10 +248,15 @@ private fun getDateAndTime(item: Item?): Pair<String, String> {
 @Preview
 @Composable
 fun PreviewWeatherForNextDaysSection() {
-    WeatherForNextDaysSection(
-        FutureWeatherDto(
-            list = emptyList()
-        )
+    WeatherForNextDaysView(
+        viewState = WeatherForNextDaysViewState(
+            futureWeather = FutureWeather(
+                list = emptyList()
+            )
+        ),
+        onTodayClicked = {},
+        onTomorrowClicked = {},
+        onNextFiveDaysClicked = {}
     )
 }
 

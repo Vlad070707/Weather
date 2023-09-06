@@ -1,12 +1,11 @@
 package com.example.domain.weather
 
-import com.example.domain.weather.model.CurrentWeatherDto
-import com.example.domain.weather.model.FutureWeatherDto
-import com.example.domain.util.RequestState
+import com.example.domain.weather.model.CurrentWeather
+import com.example.domain.weather.model.FutureWeather
 
 interface WeatherRepository {
 
-    suspend fun getCurrentWeather(city: String): RequestState<CurrentWeatherDto>
+    suspend fun getCurrentWeather(city: String): Result<CurrentWeather>
 
-    suspend fun getFutureWeather(city: String): RequestState<FutureWeatherDto>
+    suspend fun getFutureWeather(city: String): Result<FutureWeather>
 }

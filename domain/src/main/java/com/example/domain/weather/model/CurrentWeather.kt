@@ -2,7 +2,7 @@ package com.example.domain.weather.model
 
 import com.google.gson.annotations.SerializedName
 
-data class CurrentWeatherDto(
+data class CurrentWeather(
     @SerializedName("base")
     val base: String? = null,
     @SerializedName("clouds")

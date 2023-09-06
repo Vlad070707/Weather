@@ -1,7 +1,7 @@
 package com.example.data.service
 
-import com.example.domain.weather.model.CurrentWeatherDto
-import com.example.domain.weather.model.FutureWeatherDto
+import com.example.domain.weather.model.CurrentWeather
+import com.example.domain.weather.model.FutureWeather
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,14 +12,14 @@ interface WeatherService {
         @Query("q") city: String,
         @Query("units") units: String = UNITS,
         @Query("appid") appid: String = API_KEY
-    ): CurrentWeatherDto
+    ): CurrentWeather
 
     @GET(END_POINTS_FUTURE_WEATHER)
     suspend fun getFutureWeather(
         @Query("q") city: String,
         @Query("units") units: String = UNITS,
         @Query("appid") appid: String = API_KEY
-    ): FutureWeatherDto
+    ): FutureWeather
 
     companion object {
         private const val END_POINTS_CURRENT_WEATHER = "weather?"

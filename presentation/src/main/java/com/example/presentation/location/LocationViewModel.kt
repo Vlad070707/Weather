@@ -14,6 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -113,6 +114,20 @@ class LocationViewModel @Inject constructor(
             }
             clearFocusOnSearchBar()
         }
+    }
+
+    fun countryCodeToEmojiFlag(countryCode: String): String {
+        return countryCode
+            .uppercase(Locale.getDefault())
+            .map { char ->
+                Character.codePointAt("$char", 0) - 0x41 + 0x1F1E6
+            }
+            .map { codePoint ->
+                Character.toChars(codePoint)
+            }
+            .joinToString(separator = "") { charArray ->
+                String(charArray)
+            }
     }
 }
 

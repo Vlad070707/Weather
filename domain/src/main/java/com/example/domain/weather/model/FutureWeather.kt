@@ -2,7 +2,7 @@ package com.example.domain.weather.model
 
 import com.google.gson.annotations.SerializedName
 
-data class FutureWeatherDto(
+data class FutureWeather(
     @SerializedName("city")
     val city: City? = null,
     @SerializedName("cnt")
@@ -10,7 +10,7 @@ data class FutureWeatherDto(
     @SerializedName("cod")
     val cod: String? = null,
     @SerializedName("list")
-    val list: List<Item>,
+    val list: List<Item> = emptyList(),
     @SerializedName("message")
     val message: Int? = null
 )

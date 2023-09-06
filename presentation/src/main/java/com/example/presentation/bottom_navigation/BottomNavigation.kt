@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -29,10 +30,11 @@ import com.example.presentation.base.AppDestinations
 
 @Composable
 fun BottomNavigation(
+    modifier: Modifier = Modifier,
     navController: NavController,
     viewModel: BottomNavigationViewModel = hiltViewModel()
 ) {
-    val currentCityState = viewModel.currentCityState.collectAsState()
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     var currentScreen = when (navController.currentBackStackEntryAsState().value?.destination?.route) {
         AppDestinations.Location.route -> AppDestinations.Location
@@ -40,7 +42,7 @@ fun BottomNavigation(
         else -> null
     }
 
-    val isHomeAvailable = currentCityState.value.data?.isNotEmpty() == true
+    val isHomeAvailable = uiState.value.currentCity.isNotEmpty()
 
     val homeScreen = AppDestinations.Home.apply {
         isAvailable = isHomeAvailable
@@ -49,7 +51,7 @@ fun BottomNavigation(
 
     currentScreen?.let { screen ->
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .background(colorResource(id = R.color.dark_blue))
                 .padding(10.dp)
                 .fillMaxWidth(),
@@ -67,7 +69,13 @@ fun BottomNavigation(
 }
 
 @Composable
-fun BottomNavigationItem(item: AppDestinations, isSelected: Boolean, isEnabled: Boolean = true, onClick: () -> Unit) {
+fun BottomNavigationItem(
+    modifier: Modifier = Modifier,
+    item: AppDestinations,
+    isSelected: Boolean,
+    isEnabled: Boolean = true,
+    onClick: () -> Unit
+) {
     val background = if (isSelected) colorResource(id = R.color.dark_yellow) else Color.Transparent
     val contentColor = when {
         isSelected -> MaterialTheme.colorScheme.background
@@ -75,7 +83,7 @@ fun BottomNavigationItem(item: AppDestinations, isSelected: Boolean, isEnabled: 
         else -> colorResource(id = R.color.dark_yellow)
     }
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(25.dp))
             .background(background)
             .clickable(onClick = {
@@ -115,11 +123,5 @@ fun BottomNavigationItem(item: AppDestinations, isSelected: Boolean, isEnabled: 
 @Preview
 @Composable
 fun PreviewBottomNavigation() {
-    BottomNavigation(rememberNavController())
-}
-
-@Preview
-@Composable
-fun PreviewBottomNavigationItem() {
-//  BottomNavigationItem(item = Screen.Home, isSelected = true) { }
+    BottomNavigation(navController=rememberNavController())
 }

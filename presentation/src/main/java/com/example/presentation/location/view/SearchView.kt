@@ -23,11 +23,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.presentation.R
-import com.example.presentation.home.sections.TitleSection
+import com.example.presentation.home.view.TitleView
 
 @Composable
 fun SearchView(
@@ -48,7 +47,7 @@ fun SearchView(
             .padding(top = 20.dp)
     ) {
         AnimatedVisibility(visible = !isSearchBarFocused) {
-            TitleSection(
+            TitleView(
                 modifier = Modifier
                     .fillMaxWidth()
             )
@@ -135,10 +134,4 @@ private fun SearchBarView(
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewSearchView() {
-//    SearchView()
 }

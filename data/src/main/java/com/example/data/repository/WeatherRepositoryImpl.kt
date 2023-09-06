@@ -1,28 +1,29 @@
 package com.example.data.repository
 
 import com.example.data.service.WeatherService
-import com.example.domain.weather.model.CurrentWeatherDto
-import com.example.domain.weather.model.FutureWeatherDto
-import com.example.domain.util.RequestState
+import com.example.domain.weather.model.CurrentWeather
+import com.example.domain.weather.model.FutureWeather
 import com.example.domain.weather.WeatherRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class WeatherRepositoryImpl(private val service: WeatherService) : WeatherRepository {
 
-    override suspend fun getCurrentWeather(city: String): RequestState<CurrentWeatherDto> {
-        val response = try {
-            service.getCurrentWeather(city)
+    override suspend fun getCurrentWeather(city: String): Result<CurrentWeather> = withContext(Dispatchers.IO) {
+        try {
+            val response = service.getCurrentWeather(city)
+            Result.success(response)
         } catch (e: Exception) {
-            return RequestState.Error(e.localizedMessage)
+            Result.failure(e)
         }
-        return RequestState.Success(response)
     }
 
-    override suspend fun getFutureWeather(city: String): RequestState<FutureWeatherDto> {
-        val response = try {
-            service.getFutureWeather(city)
+    override suspend fun getFutureWeather(city: String): Result<FutureWeather> = withContext(Dispatchers.IO) {
+        try {
+            val response = service.getFutureWeather(city)
+            Result.success(response)
         } catch (e: Exception) {
-            return RequestState.Error(e.localizedMessage)
+            Result.failure(e)
         }
-        return RequestState.Success(response)
     }
 }

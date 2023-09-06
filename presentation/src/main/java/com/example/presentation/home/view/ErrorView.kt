@@ -1,4 +1,4 @@
-package com.example.presentation.home.sections
+package com.example.presentation.home.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,13 +23,14 @@ import androidx.compose.ui.unit.sp
 import com.example.presentation.R
 
 @Composable
-fun ErrorSection(
+fun ErrorView(
+    modifier: Modifier = Modifier,
     onUpdateButtonClicked: () -> Unit
 ) {
     Column(
-        modifier = Modifier
-          .fillMaxSize()
-          .background(MaterialTheme.colorScheme.background),
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

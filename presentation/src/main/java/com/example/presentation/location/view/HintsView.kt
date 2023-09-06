@@ -21,12 +21,14 @@ import com.example.presentation.R
 import com.example.presentation.base.Loader
 import java.util.Locale
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.text.EmojiSupportMatch
 
 @Composable
 fun HintsView(
     modifier: Modifier = Modifier,
     hintsList: HintsList,
     isLoading: Boolean = false,
+    countryCodeToEmojiFlag: (String) -> String,
     onHintClicked: (String) -> Unit
 ) {
     Box(
@@ -54,7 +56,8 @@ fun HintsView(
                             HintItem(
                                 name = name,
                                 countryCode = countryCode,
-                                onHintClicked = onHintClicked
+                                onHintClicked = onHintClicked,
+                                countryCodeToEmojiFlag = countryCodeToEmojiFlag
                             )
                         }
                     }
@@ -68,7 +71,8 @@ fun HintsView(
 private fun HintItem(
     name: String,
     countryCode: String?,
-    onHintClicked: (String) -> Unit
+    onHintClicked: (String) -> Unit,
+    countryCodeToEmojiFlag: (String) -> String,
 ) {
     Row(
         modifier = Modifier
@@ -109,22 +113,13 @@ private fun HintItem(
     }
 }
 
-fun countryCodeToEmojiFlag(countryCode: String): String {
-    return countryCode
-        .uppercase(Locale.getDefault())
-        .map { char ->
-            Character.codePointAt("$char", 0) - 0x41 + 0x1F1E6
-        }
-        .map { codePoint ->
-            Character.toChars(codePoint)
-        }
-        .joinToString(separator = "") { charArray ->
-            String(charArray)
-        }
-}
 
 @Preview
 @Composable
 private fun HintsSectionPreview() {
-    HintsView(hintsList = HintsList(), onHintClicked = {})
+    HintsView(
+        hintsList = HintsList(),
+        countryCodeToEmojiFlag = { countryCode -> countryCode },
+        onHintClicked = {}
+    )
 }
